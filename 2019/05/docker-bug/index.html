@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="爆炸头博客">
+      <meta property="og:title" content="Docker学习笔记（bug）">
   
   <!--Open Graph Description-->
   
@@ -28,7 +28,7 @@
   <meta property="og:site_name" content="爆炸头博客">
   <!--Type page-->
   
-      <meta property="og:type" content="website">
+      <meta property="og:type" content="article">
   
   <!--Page Cover-->
   
@@ -37,7 +37,7 @@
 
   <!-- Title -->
   
-  <title>归档：2019 - 爆炸头博客</title>
+  <title>Docker学习笔记（bug） - 爆炸头博客</title>
 
 
   <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
@@ -117,74 +117,76 @@
 
 
   <!-- Main Content -->
-  
-
-<!-- Main Content -->
-<div class="archive content-area">
-  <div class="container">
-    <h1 class="entry-title">2019</h1>
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <!-- Use lodash to classify posts. See https://lodash.com/docs#groupBy
-          1. group site.posts by year
-          2. sort posts-in-one-year by Month and Day
-        -->
-        
-
-        
-          <h2 class="year">2019</h2>
-          <ul class="list">
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            Docker学习笔记（bug）
             
-  <li>
-    <span class="date">
-      2019-05-11
-    </span>
-    <a href="/2019/05/docker-bug/" class="title">
-      Docker学习笔记（bug）
-    </a>
-  </li>
+          </h1>
+          <p class="posted-on">
+          2019-05-11
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/English/" rel="tag">
+                  English
+                </a>
+              
+                <a href="/tags/Grammar/" rel="tag">
+                  Grammar
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>这篇文章是解决一些docker遇到的bug</p>
+<a id="more"></a>
+<h2 id="1-第一个bug-Docker-network-nat-is-ambigous"><a href="#1-第一个bug-Docker-network-nat-is-ambigous" class="headerlink" title="1. 第一个bug Docker: network nat is ambigous"></a>1. 第一个bug Docker: network nat is ambigous</h2><p>可以通过<code>docker network ls</code>发现有两个nat network。我出现这个问题是因为我重置了docker。<br>解决办法：<br>网址：<code>https://blog.csdn.net/u012843100/article/details/88710101#</code><br>说的挺清楚的，这个是我遇到比较大的bug</p>
+<h2 id="2-第二个bug-windos上运行cp和commit命令的时候"><a href="#2-第二个bug-windos上运行cp和commit命令的时候" class="headerlink" title="2. 第二个bug windos上运行cp和commit命令的时候"></a>2. 第二个bug windos上运行cp和commit命令的时候</h2><p>一定要先停下容器才能上传 （windwos下是这样的）</p>
 
-  <li>
-    <span class="date">
-      2019-05-10
-    </span>
-    <a href="/2019/05/English-composition/" class="title">
-      Untitled
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2019-05-10
-    </span>
-    <a href="/2019/05/Dokcer-Notes2/" class="title">
-      Docker学习笔记（二）
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2019-05-09
-    </span>
-    <a href="/2019/05/Docker-Notes/" class="title">
-      Docker学习笔记
-    </a>
-  </li>
-
-  <li>
-    <span class="date">
-      2019-05-08
-    </span>
-    <a href="/2019/05/hexo-renderer-sass-install-in-china/" class="title">
-      第一次搭建博客的流程与心德
-    </a>
-  </li>
-
-
-          </ul>
-        
-      </div>
+        </div>
+      </article>
     </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-docker-bug';
+          this.page.title = 'Docker学习笔记（bug）';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+      
+        <div class="nav-next">
+          <a href="/2019/05/Dokcer-Notes2/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
   </div>
 </div>
 
@@ -253,12 +255,14 @@
   var disqus_shortname = 'hinpc';
 
   
+  var disqus_url = 'http://sunning123.top/2019/05/docker-bug/';
+  
 
   (function(){
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
   })();
 </script>
