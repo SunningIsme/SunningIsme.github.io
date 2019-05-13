@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Ning Sun">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="英语作文">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="爆炸头博客">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>英语作文 - 爆炸头博客</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://static.hinpc.com/images/2018/logo.svg" alt="爆炸头博客" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            英语作文
+            
+          </h1>
+          <p class="posted-on">
+          2019-05-13
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/SpringCloud/" rel="tag">
+                  SpringCloud
+                </a>
+              
+                <a href="/tags/eureka/" rel="tag">
+                  eureka
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>学习SpringCould第二天。</p>
+<a id="more"></a>
+<h2 id="1-分布式下服务注册的地位和原理"><a href="#1-分布式下服务注册的地位和原理" class="headerlink" title="1.分布式下服务注册的地位和原理"></a>1.分布式下服务注册的地位和原理</h2><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513163138.png"><br>在分布式系统中会出现个这种问题，服务器一直在变而且数量特别的多时候，A里面写很多的B的地址吗？显然是不行的。<br>这时候就会用注册中心了，当B启动的时候就会把信息汇报给注册中心<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513163659.png"><br>A怎么能拿到B服务的信息呢。<br>第一种方案：注册中心把所有B的服务都给A，A挑选一个（负载均衡机制）<code>客户端发现</code><br>缺点：得需要自己写代码，找到B<br>第二种方案：<code>代理</code>，就是这个代理先从注册中心挑出来一个，然后A去找代理要就行<code>服务端发现</code><br>优点：对A是透明不可见的。<br>Eureka采用的是客户端发现<br>服务端发现：Nginx，Zookeeper，Kubernetes<br>有个问题：是否能融入其他语言进去呢？<br>微服务的特点：异构<br>不同语言，不同类型的数据库<br>SpringCloud 采用的是REST服务调用方式</p>
+<h2 id="2-微服务拆分问题"><a href="#2-微服务拆分问题" class="headerlink" title="2.微服务拆分问题"></a>2.微服务拆分问题</h2><p>首先确认架构：<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513165437.png"><br>业务形态不适合的：<br>系统中包含很多很多<code>强事务场景</code>的<br>业务相对稳定，迭代周期长<br>访问压力大，可用性要求不高<br>服务拆分的方法论：<br><code>扩展立方模型</code><br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513171804.png"><br>X轴: 水平复制<br>Z轴：数据分区<br>Y轴：功能解耦<br>如何拆分功能<code>功能</code><br><code>但一职责，松耦合，高内聚</code>，每个服务只负责单一的职责<br><code>关注点分离</code><br>按指责：给我们的服务进行分类（订单，商品，前端，后端）<br>按通用性 ：一些基础组件，消息服务，用户服务<br>按粒度级别：<br>服务和数据的关系<br>先考虑业务功能，在考虑数据（先查分业务功能，在拆分数据）<br>无状态服务<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513181952.png"></p>
+<h2 id="3-康威定律"><a href="#3-康威定律" class="headerlink" title="3.康威定律"></a>3.康威定律</h2><p>微服务的理论基础<br>任何组织在设计一套系统时，所交付的设计方案结构上都与该结构的沟通结构保持一致。</p>
+<p>这部分学习的有点迷糊。之后做真实的案例的时候才行。</p>
+<h2 id="4-springcloud实战代码编写"><a href="#4-springcloud实战代码编写" class="headerlink" title="4.springcloud实战代码编写"></a>4.springcloud实战代码编写</h2><p>这里制铁出遇到的坑<br>第一个坑<br><code>Completed shut down of DiscoveryClient</code><br>解决办法在<code>pom.xml</code>里面添加web依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>第二个坑<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513213023.png"><br>我去百度搜了搜说是时区问题，在我的mysql客户端输入<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show variables like &apos;%time_zone%&apos;;</span><br><span class="line">set global time_zone=&apos;+8:00&apos;;</span><br></pre></td></tr></table></figure></p>
+<p>就解决了<br>第三个坑<br>就是Idea的使用的坑<br>因为以前一直使用的是<code>Eclipse</code><br>所以一些操作不太流畅。比如：查找替换Crtl+shift+R , 以前用的Alt+\也不好用了也就是补全代码</p>
+<p>学习了几个新技术<br>1.lombok<br>这个插件可以简化代码，简化getset方法。比如建立实体类，需要getset方法，这里就不用写了加个注解就好<br>相关的知识:<br>现在pom.xml添加依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">然后在Idea开发工具里面添加插件。plugins里面搜索就号。记住一定要重启Idea</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">package com.sn.product.dataobject;</span><br><span class="line">import lombok.Data;</span><br><span class="line">import javax.persistence.Entity;</span><br><span class="line">import javax.persistence.Id;</span><br><span class="line">import java.math.BigDecimal;</span><br><span class="line">import java.util.Date;</span><br><span class="line">@Data</span><br><span class="line">//@Table(name = &quot;T_proxxx&quot;)</span><br><span class="line">@Entity</span><br><span class="line">public class ProductInfo &#123;</span><br><span class="line">    @Id</span><br><span class="line">    private String productId;</span><br><span class="line">    /** 名字. */</span><br><span class="line">    private String productName;</span><br><span class="line">    /** 单价. */</span><br><span class="line">    private BigDecimal productPrice;</span><br><span class="line">    /** 库存. */</span><br><span class="line">    private Integer productStock;</span><br><span class="line">    /** 描述. */</span><br><span class="line">    private String productDescription;</span><br><span class="line">    /** 小图. */</span><br><span class="line">    private String productIcon;</span><br><span class="line">    /** 状态, 0正常1下架. */</span><br><span class="line">    private Integer productStatus;</span><br><span class="line">    /** 类目编号. */</span><br><span class="line">    private Integer categoryType;</span><br><span class="line">    private Date createTime;</span><br><span class="line">    private Date updateTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个@Date就代表了getset方法。@Id的意思是这个属性是主键<br>2.java8的新特性stream()方法和collect()方法<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513215142.png"><br>网上搜了一下用法:<a href="https://blog.csdn.net/lidai352710967/article/details/81461119" target="_blank" rel="noopener">https://blog.csdn.net/lidai352710967/article/details/81461119</a> 这个博客讲的挺清楚的<br>3.jpa<br>我发现所有的dao方法都继承了一个<code>JpaRepository&lt;ProductInfo, String&gt;</code>这个方法，进去看看源码，发现传递的是表名和方法名，就可以调用写好的调用数据库方法了<br>我在网上找了找文章:<a href="https://www.cnblogs.com/qingwen/p/5578862.html" target="_blank" rel="noopener">https://www.cnblogs.com/qingwen/p/5578862.html</a><br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513215701.png"></p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-SpringCould-SOA2';
+          this.page.title = '英语作文';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+      
+        <div class="nav-next">
+          <a href="/2019/05/position-etc6/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/SunningIsme" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="https://twitter.com/GallenHu" class="icon icon-twitter" target="_blank">twitter</a>
+            
+              <a href="mailto:1239222923@qq.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onsubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>爆炸头博客 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'http://sunning123.top/2019/05/SpringCould-SOA2/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>
