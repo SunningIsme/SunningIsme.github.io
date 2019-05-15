@@ -156,7 +156,7 @@
 <h4 id="1-5-Valid注解和BindingResult-bindingResult"><a href="#1-5-Valid注解和BindingResult-bindingResult" class="headerlink" title="1.5 @Valid注解和BindingResult bindingResult"></a>1.5 @Valid注解和BindingResult bindingResult</h4><p>作用：用于验证注解是否符合要求，直接加在变量user之前，在变量中添加验证信息的要求，当不符合要求时就会在方法中返回message 的错误提示信息<br>@Validated和BindingResult bindingResult是配对出现，并且形参顺序是固定的（一前一后）。<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190514185901.png"><br>我这里用的是<code>@NotEmpty</code>这个注解，用来判断从前台传过来的数据是否为空<br>看代码就可以大致理解他们的作用了。</p>
 <h4 id="1-6-处理异常的方法"><a href="#1-6-处理异常的方法" class="headerlink" title="1.6 处理异常的方法"></a>1.6 处理异常的方法</h4><p>自定义异常类，继承RuntimeException<br>大部分都需要两部分，一个code一个message<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190514190212.png"></p>
 <h4 id="1-7-VO-DTO的概念和用处"><a href="#1-7-VO-DTO的概念和用处" class="headerlink" title="1.7 VO,DTO的概念和用处"></a>1.7 VO,DTO的概念和用处</h4><p>VO：视图对象，用于展示层，它的作用是把某个指定页面（或组件）的所有数据封装起来<br>DTO:数据传输对象，这个概念来源于J2EE的设计模式，原来的目的是为了EJB的分布式应用提供粗粒度的数据实体，以减少分布式调用的次数，从而提高分布式调用的性能和降低网络负载，但在这里，我泛指用于展示层与服务层之间的数据传输对象。<br>附上代码就可以理解了：<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190514190545.png"><br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190514190701.png"></p>
-<h4 id="Chrome插件Postman"><a href="#Chrome插件Postman" class="headerlink" title="Chrome插件Postman"></a>Chrome插件Postman</h4><p>通过这个插件来模拟前台传递的数据<br>下载插件的时候需要连接外网<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190514195443.png"></p>
+<h4 id="1-8Chrome插件Postman"><a href="#1-8Chrome插件Postman" class="headerlink" title="1.8Chrome插件Postman"></a>1.8Chrome插件Postman</h4><p>通过这个插件来模拟前台传递的数据<br>下载插件的时候需要连接外网<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190514195443.png"></p>
 <h2 id="2-如何拆数据"><a href="#2-如何拆数据" class="headerlink" title="2.如何拆数据"></a>2.如何拆数据</h2><p>每个微服务都有单独的数据存储<br>依据服务特点选择不同的数据库类型<br>难点在确定边界<br>以这个项目为例，订单服务和商品服务。两个服务有单独的数据库，表也不一样。<br>如果点单服务需要商品服务的数据怎么办呢？通过在订单服务里面添加冗余的数据，可是如何通信呢。又如何调节呢？</p>
 <h4 id="2-1应用间通信"><a href="#2-1应用间通信" class="headerlink" title="2.1应用间通信"></a>2.1应用间通信</h4><p>HTTP vs RPC<br>Dubbo vs Spirng Cloud</p>
 <p>SpringCloud中服务间两种restful调用方式<br><code>RestTemplate</code><br><code>Feign</code></p>
@@ -165,8 +165,8 @@
 <p>这样就配置完了，然后在controller里面<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String str = restTemplate.getForObject(&quot;http://PRODUCT/msg&quot;,String.class);</span><br><span class="line">return str;</span><br></pre></td></tr></table></figure></p>
 <p>这样就好了有没有发现，代码减少了很多很多</p>
 <p>这里有个负载均衡问题。比如有很多地址。负载均衡的策略（随机，轮询）<br>eureka是客户端发现，属于软负载。也就是客户端向服务器拉取可用的服务器，然后根据负载均衡策略，找到服务器发送数据</p>
-<h4 id="2-3-服务端负载均衡器Ribbon"><a href="#2-3-服务端负载均衡器Ribbon" class="headerlink" title="2.3 服务端负载均衡器Ribbon"></a>2.3 服务端负载均衡器Ribbon</h4><p>可以自动转化<code>客户端</code>发现的负载均衡的服务<code>RestTemplate</code>和<code>Feign</code> <code>Zuul</code><br>还封装了<code>http client</code> 和 <code>Ok client</code> 两种请求端实现，默认使用了对ribbon对eureka服务的负载均衡client<br>其中<code>@LoadBalanced</code>这个注解就是通过ribbon组建实现的<br>Ribbon实现软负载均衡有三点：<br>服务发现：发现以来服务的列表（一句服务的名字把该服务下的实例都找出来）<br>服务选择规则：依据规则如何从多个策略中选择多个服务<br>服务监听：也就是检测失效的服务<br>主要组建<br>ServerList<br>IRule<br>ServerListFilter<br>主要流程，先通过ServerList找到所有目标地址，通过ServerListFilter来筛选服务，最后通过IRule选择一个实例作为最终目标结果</p>
-<h4 id="2-4负载均衡器Ribbon"><a href="#2-4负载均衡器Ribbon" class="headerlink" title="2.4负载均衡器Ribbon"></a>2.4负载均衡器Ribbon</h4>
+<h4 id="2-3-服务端负载均衡器Ribbon"><a href="#2-3-服务端负载均衡器Ribbon" class="headerlink" title="2.3 服务端负载均衡器Ribbon"></a>2.3 服务端负载均衡器Ribbon</h4><p>可以自动转化<code>客户端</code>发现的负载均衡的服务<code>RestTemplate</code>和<code>Feign</code> <code>Zuul</code><br>还封装了<code>http client</code> 和 <code>Ok client</code> 两种请求端实现，默认使用了对ribbon对eureka服务的负载均衡client<br>其中<code>@LoadBalanced</code>这个注解就是通过ribbon组建实现的<br>Ribbon实现软负载均衡有三点：<br>服务发现：发现以来服务的列表（一句服务的名字把该服务下的实例都找出来）<br>服务选择规则：依据规则如何从多个策略中选择多个服务<br>服务监听：也就是检测失效的服务<br>主要组建<br>ServerList<br>IRule<br>ServerListFilter<br>主要流程，先通过ServerList找到所有目标地址，通过ServerListFilter来筛选服务，最后通过IRule选择一个实例作为最终目标结果<br>默认的负载均衡为轮询。换成随机的<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PRODUCT</span><br><span class="line">	ribbon:</span><br><span class="line">		NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule</span><br></pre></td></tr></table></figure></p>
+
         </div>
       </article>
     </div>
@@ -194,6 +194,10 @@
     </div>
     <!-- Pre or Next -->
     <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/05/SpringCloud-SOA4/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
+        </div>
       
       
         <div class="nav-next">

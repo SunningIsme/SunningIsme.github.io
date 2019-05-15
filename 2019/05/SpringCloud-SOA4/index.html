@@ -129,17 +129,21 @@
             
           </h1>
           <p class="posted-on">
-          2019-05-12
+          2019-05-15
           </p>
           <div class="tags-links">
             
               
-                <a href="/tags/English/" rel="tag">
-                  English
+                <a href="/tags/eureka/" rel="tag">
+                  eureka
                 </a>
               
-                <a href="/tags/Grammar/" rel="tag">
-                  Grammar
+                <a href="/tags/Feign/" rel="tag">
+                  Feign
+                </a>
+              
+                <a href="/tags/RabbitMQ/" rel="tag">
+                  RabbitMQ
                 </a>
               
             
@@ -147,13 +151,16 @@
         </div>
         <!-- Post Main Content -->
         <div class="entry-content ">
-          <p>这篇文章记录我 复习英语六级作文的过程</p>
+          <p>今天是学习SpringCloud第四天，今天主要学习RPC进程通信的Feign<br>RabbitMQ的相关知识</p>
 <a id="more"></a>
-<h6 id="1-Relationship-Between-One’s-Major-and-Future-Job"><a href="#1-Relationship-Between-One’s-Major-and-Future-Job" class="headerlink" title="1. Relationship Between One’s Major and Future Job"></a>1. Relationship Between One’s Major and Future Job</h6><p><code>It&#39;s a striking fact</code> that there isn’t a necessary relationship between one’s major and future job.According to a recent convey conduct by CCTV, a high proportion of 55.6 percent people acknowledge that they <code>consider little about</code> their major when choosing a job.<br><code>To account for this phenonment</code>, people have <code>come up with</code> various of reason . <code>In the first palce</code> , due to the <code>rapid development of technoledge</code>, knowledge from textbooks often <code>lag behind</code> the real need, so many employers pay more attention to the job condidates practical ability than their <code>professional knowledge</code>.<code>Additionally</code>,<br>when choosing a major to study , <code>many of people actually don&#39;t know exactly where it direct them to</code> . However , <code>when stepping to society , they may find out that they are
-not interesting in what they have learned and therefore switch to a job that doesn&#39;t relate much to their major</code>.<br><code>As far as I&#39;m concerned</code>, <code>one should adapt himself to the working environment by adjusting his own knowledge and information system.The pursuit of knoledge and ability should
-never be ceased.</code></p>
-<h6 id="2-Shap-a-Healthy-Personality"><a href="#2-Shap-a-Healthy-Personality" class="headerlink" title="2. Shap a Healthy Personality"></a>2. Shap a Healthy Personality</h6><p>It’s a widely ackonwledge that shaping a healthy personality is of great importance to college student development personality. When it come to shaping healthy personality , the overwhelming majory student believe that it does help them grow better and live a more successful and happier life.<br>However, college students seldom attach great importance to shaping their personality. why does this happend? Firstly, most student who neglect the importance of shaping healthy personality and pay too much attention to the accumulation of knoledge. In their mind , execllent performance in academic is much more significant than a healthy personality.They hold a view that graduates with excellent academic performance are more likely to find an ideal job.Moreove,a growing number of students spend too much time in Internet and part-time jobs rather than on shaping their personality.<br>As college student,we should konw that a healthy personality not only presents a characteristic of our personal quality but also ensures the development of other qualities.Therefore,in order to shape a healthy personality,we should start from our daily life, learning to cultivate our moral values.</p>
-<h6 id="3-How-Do-We-Show-Our-Love-to-Our-Parents-in-Return"><a href="#3-How-Do-We-Show-Our-Love-to-Our-Parents-in-Return" class="headerlink" title="3. How Do We Show Our Love to Our Parents in Return?"></a>3. How Do We Show Our Love to Our Parents in Return?</h6><p>As can be seen in the the picture, one boy remember his birthday and his friends birthday;the other boy even remember his idol’s birthday.Ironically,both of them forget his parents birthday.Our parents have done much for us.They give us lots of love and care,but we don’t care about them enough.This picture reminds us that we should do something to show our love to parents in return.<br>What can we do to repay our parents?Firstly,We should talk with them as much as possibly.It’s said that parents today always feel lonely,so it’s importance for us to communicate with them.Secondly,doing some housework seem to a great chance to show our love.To do some housework not only relieves parents burden but also shows our gratitude for what they have done for this family.Finally ,we are supposed to have a good future.The harder work,the better future we’ll have.If we make certain achievements, they’ll be proud of us.<br>Parents’ love is unconditional and thus the greatest love in the world.If we should spend more time taking care of our parents,love will be always around them.</p>
+<h2 id="1-Feign"><a href="#1-Feign" class="headerlink" title="1.Feign"></a>1.Feign</h2><p>使用流程<br>1.首先引入Feign 应为springboot版本不一样引入的feign也不一样<br>我这里引入的是<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">   &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">   &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>2.在启动类上添加注解<code>@EnableFeignClients</code><br>3.编写接口<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@FeignClient(name = &quot;product&quot;)</span><br><span class="line">public interface ProductClient &#123;</span><br><span class="line">    @GetMapping(&quot;/msg&quot;)</span><br><span class="line">    String GetProductMeg();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里主要是通过<code>@GetMapping(&quot;/msg&quot;)</code>来定位到服务端的那个方法的<br>4.编写服务端接受类<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Autowired</span><br><span class="line">    private ProductClient productClient;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;/getProductMsg&quot;)</span><br><span class="line">    public String getroductMsg()&#123;</span><br><span class="line">        String str = productClient.GetProductMeg();</span><br><span class="line">        System.out.println(str);</span><br><span class="line">        return str;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>总结：<br>声明式REST客户端(伪RPC)<br>采用了基于接口的注解<br>内部也是ribbon</p>
+<h2 id="2-Feign的实战操作"><a href="#2-Feign的实战操作" class="headerlink" title="2.Feign的实战操作"></a>2.Feign的实战操作</h2><p>第一个bug<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190515152629.png"><br>我是因为 一边是GetMapping 一边是PostMapping报的错。如果路径不对也会报错<br>这里遇到了几个BUG<br>比如需要用到@RequestBody注解的话，必须得用@PostMapping<br>第二个bug<br>传递一个名为<code>CartDTO</code>的类给Product服务。里面有两个参数，传递过去只有一个参数有值。另一个为null<br>解决办法：在<code>CartDTO</code>类里面添加无参构造方法。要不然序列化和反序列化有问题。</p>
+<h2 id="2-代码增强"><a href="#2-代码增强" class="headerlink" title="2.代码增强"></a>2.代码增强</h2><p>1.不建议把表映射的实体类暴漏出去<br>2.重复对象定义（商品服务和订单服务都有相同的实体类）<br>3.把对方服务定义到自己服务也是不合理的<br>解决方法：<br>划分多模块：<br>product-server:所有业务逻辑<br>product-client:对外暴露的接口<br>product-common:公共的对象</p>
+<h2 id="3-多模块的学习"><a href="#3-多模块的学习" class="headerlink" title="3.多模块的学习"></a>3.多模块的学习</h2><h2 id="4-RabbitMQ的安装"><a href="#4-RabbitMQ的安装" class="headerlink" title="4.RabbitMQ的安装"></a>4.RabbitMQ的安装</h2><p>通过队列和订阅主题实现消息的发布和订阅，一个微服务可以是消息的发布者，把消息通过异步的方式发到队列或者订阅主题下，作为消费者的微服务可以从队列或者主题中获取消息，通过消息中间键，把消息中的直接调用解耦。<br>网址下载：<a href="https://www.rabbitmq.com/download.html" target="_blank" rel="noopener">https://www.rabbitmq.com/download.html</a><br>找到docker安装<br>选择一个版本运行如下命令<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190515174801.png"></p>
+<p>哇，我这里遇到个大坑。。。困扰了我一个下午。就是我的docker版本不对。换了版本就耗用了<br>贴上一个成功的图片。。开心<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190515204438.png"><br>明天攻克模块拆分。。开心</p>
 
         </div>
       </article>
@@ -169,7 +176,7 @@ never be ceased.</code></p>
     <script type="text/javascript">
     var disqus_config = function () {
           this.page.url = window.location.href;
-          this.page.identifier = 'post-position-etc6';
+          this.page.identifier = 'post-SpringCloud-SOA4';
           this.page.title = '英语作文';
       };
     </script>
@@ -183,13 +190,9 @@ never be ceased.</code></p>
     <!-- Pre or Next -->
     <div class="nav-links">
       
-        <div class="nav-previous">
-          <a href="/2019/05/SpringCould-SOA2/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
-        </div>
-      
       
         <div class="nav-next">
-          <a href="/2019/05/SpringCould-SOA/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+          <a href="/2019/05/SpringCloud-SOA3/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
         </div>
       
     </div>
@@ -262,7 +265,7 @@ never be ceased.</code></p>
   var disqus_shortname = 'hinpc';
 
   
-  var disqus_url = 'http://sunning123.top/2019/05/position-etc6/';
+  var disqus_url = 'http://sunning123.top/2019/05/SpringCloud-SOA4/';
   
 
   (function(){
