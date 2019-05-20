@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Ning Sun">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="SpringCould学习笔记(七)">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="爆炸头博客">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>SpringCould学习笔记(七) - 爆炸头博客</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://static.hinpc.com/images/2018/logo.svg" alt="爆炸头博客" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            SpringCould学习笔记(七)
+            
+          </h1>
+          <p class="posted-on">
+          2019-05-18
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/eureka/" rel="tag">
+                  eureka
+                </a>
+              
+                <a href="/tags/SpringCloud Bus/" rel="tag">
+                  SpringCloud Bus
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>今天是学习微服务的第八天。今天主要学习了RabbitMQ的基本操作和<br>SpringCloud Stream 的简化RabbitMQ操作的使用</p>
+<a id="more"></a>
+<h2 id="1-rabbitMQ实战使用"><a href="#1-rabbitMQ实战使用" class="headerlink" title="1.rabbitMQ实战使用"></a>1.rabbitMQ实战使用</h2><p>实现添加依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后启动项目，发现可以启动。但是不推荐。因为启动时的是默认格式<br>这里需要配置一下<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rabbitmq:</span><br><span class="line">  host: localhost</span><br><span class="line">  port: 5672</span><br><span class="line">  username: guest</span><br><span class="line">  password: guest</span><br></pre></td></tr></table></figure></p>
+<p>编写接收端的代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//1.@RabbitListener(queues = &quot;myQueue&quot;)</span><br><span class="line">    //2.自动创建队列@RabbitListener(queuesToDeclare = @Queue(&quot;myQueue&quot;))</span><br><span class="line">    //3.自动创建，Exchange和Queue绑定</span><br><span class="line">    @RabbitListener(bindings = @QueueBinding(</span><br><span class="line">            value = @Queue(&quot;myQueue&quot;),</span><br><span class="line">            exchange = @Exchange(&quot;myExchange&quot;)</span><br><span class="line">    ))</span><br></pre></td></tr></table></figure></p>
+<p>这里有三种方式：<br>第一种是建立一个<code>myQueue</code>队列，但是需要手动在管理端创建名为<code>myQueue</code>的队列<br>如果不创建会报错<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190519224512.png"><br>第二种是自动创建一个<code>myQueue</code>队列。不需要手动创建了<br>第三种一般用的多带有,exchange，Routing key，Queue的参数。<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190519224644.png"><br>编写发送方代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class MqSenderTest  extends OrderApplicationTests &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private AmqpTemplate amqpTemplate;</span><br><span class="line">    @Test</span><br><span class="line">    public void send()&#123;</span><br><span class="line">        amqpTemplate.convertAndSend(&quot;myQueue&quot;,&quot;now&quot;+new Date());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行之后<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190519224607.png"><br>如果有多个服务呢？<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190519224918.png"><br>贴上代码<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">//电脑另一类服务</span><br><span class="line">   @RabbitListener(bindings = @QueueBinding(</span><br><span class="line">           exchange = @Exchange(&quot;myOrder&quot;),</span><br><span class="line">           key = &quot;computer&quot;,</span><br><span class="line">           value = @Queue(&quot;computerOrder&quot;)</span><br><span class="line"></span><br><span class="line">   ))</span><br><span class="line">   public void computer(String message)&#123;</span><br><span class="line">       log.info(&quot;computerMqReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   //水果另一类服务</span><br><span class="line">   @RabbitListener(bindings = @QueueBinding(</span><br><span class="line">           exchange = @Exchange(&quot;myOrder&quot;),</span><br><span class="line">           key = &quot;fruit&quot;,</span><br><span class="line">           value = @Queue(&quot;fruitOrder&quot;)</span><br><span class="line"></span><br><span class="line">   ))</span><br><span class="line">   public void fruit(String message)&#123;</span><br><span class="line">       log.info(&quot;fruitMqReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这就替代了两个服务一个电脑一个水果<br>接收端可以选择<code>key</code>来接受<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void sendOrder()&#123;</span><br><span class="line">    amqpTemplate.convertAndSend(&quot;myOrder&quot;,&quot;computer&quot;,&quot;now&quot;+new Date());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这段代码就表示接受的是computer服务的<br>结果<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190519225345.png"></p>
+<h2 id="2-Spring-Cloud-Stream"><a href="#2-Spring-Cloud-Stream" class="headerlink" title="2.Spring Cloud Stream"></a>2.Spring Cloud Stream</h2><p>官方定义：Spirng Cloud Stream 是为微服务提供消息推动能力的框架<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520163453.png"><br>有个局限 Binder只支持两种RabbitMQ 和 Kafka</p>
+<h4 id="2-Spring-Cloud-Stream实际操作"><a href="#2-Spring-Cloud-Stream实际操作" class="headerlink" title="2.Spring Cloud Stream实际操作"></a>2.Spring Cloud Stream实际操作</h4><p>首先引入依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-stream-rabbit&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后编写个stream的接口<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public interface StreamClient &#123;</span><br><span class="line"></span><br><span class="line">    @Input(&quot;myMessageInput&quot;)</span><br><span class="line">    SubscribableChannel input();</span><br><span class="line"></span><br><span class="line">    @Output(&quot;myMessageOutput&quot;)</span><br><span class="line">    MessageChannel output();</span><br><span class="line"></span><br><span class="line">    @Input(&quot;myMessageInput2&quot;)</span><br><span class="line">    SubscribableChannel input2();</span><br><span class="line"></span><br><span class="line">    @Output(&quot;myMessageOutput2&quot;)</span><br><span class="line">    MessageChannel output2();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我这里有两个队列<br>然后编写接收端<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@StreamListener(&quot;myMessageOutput&quot;)</span><br><span class="line">    @SendTo(&quot;myMessageOutput2&quot;)</span><br><span class="line">    public String process (OrderDTO orderDTO)&#123;</span><br><span class="line"></span><br><span class="line">        log.info(&quot;StreamReceive:&#123;&#125;&quot;,orderDTO);</span><br><span class="line">        return &quot;received&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">	@StreamListener(&quot;myMessageOutput2&quot;)</span><br><span class="line">    public void process2 (String str)&#123;</span><br><span class="line">        log.info(&quot;接收到了:&#123;&#125;&quot;,str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先是<code>@StreamListener</code>是个监听的注解监听<code>myMessageOutput</code>的注解<br><code>@SendTo(&quot;myMessageOutput2&quot;)</code>注解的意思是成功接受后，返回信息刀队列<code>myMessageOutput2</code>里面<br>自然<code>myMessageOutput2</code>也有接收端了。<br>编写发送端<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class SendMessageController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private StreamClient streamClient;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 发送orderDTO对象</span><br><span class="line">     */</span><br><span class="line">    @GetMapping(&quot;/sendMessage&quot;)</span><br><span class="line">    public void process()&#123;</span><br><span class="line"></span><br><span class="line">        OrderDTO orderDTO = new OrderDTO();</span><br><span class="line">        orderDTO.setOrderId(&quot;123&quot;);</span><br><span class="line">        streamClient.output().send(MessageBuilder.withPayload(orderDTO).build());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是如果配置多个服务呢？<br>这样每个服务都会接收到消息，但是一般都是一个接受就行<br>这就需要分组了。添加配置<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stream:</span><br><span class="line">      bindings:</span><br><span class="line">        myMessageInput:</span><br><span class="line">          group: order</span><br></pre></td></tr></table></figure></p>
+<p>两个实例都在一个order组里面。都监听一个实例。<br>&lt;img src=”<a href="http://pr6tkgeuu.bkt.clouddn.com//20190520165452.png&gt;" target="_blank" rel="noopener">http://pr6tkgeuu.bkt.clouddn.com//20190520165452.png&gt;</a><br>这里还会有个属性<code>content-type: application/json</code><br>如果队列拥堵了。可以在rabbitmq上看到属性。就不是64位编码过的数据了。<br>这里我发现了个坑。就是<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520171706.png"><br>发现了几个点<br>第一个：就是这个组<code>myMessageInput.order</code>这个组一直存在。就算我把服务听了也存在。我通过手动删除才删除掉队列的<br>第二个：一定要监听调用的<code>output方法</code>对应的队列。<br>Stream主要简化了开发人员对消息中间键的使用。不用定义什么Routing key，Exchanges啥的。降低了开发的复杂度。主要关注业务的开发就好。</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-SpringCloud-SOA7';
+          this.page.title = 'SpringCould学习笔记(七)';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/05/composition-conclusion/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2019/05/SpringCloud-SOA8/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/SunningIsme" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="https://twitter.com/GallenHu" class="icon icon-twitter" target="_blank">twitter</a>
+            
+              <a href="mailto:1239222923@qq.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onsubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>爆炸头博客 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'http://sunning123.top/2019/05/SpringCloud-SOA7/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>
