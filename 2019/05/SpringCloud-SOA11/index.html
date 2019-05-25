@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="SpringCould学习笔记(八)">
+      <meta property="og:title" content="SpringCould学习笔记(十一)">
   
   <!--Open Graph Description-->
   
@@ -37,7 +37,7 @@
 
   <!-- Title -->
   
-  <title>SpringCould学习笔记(八) - 爆炸头博客</title>
+  <title>SpringCould学习笔记(十一) - 爆炸头博客</title>
 
 
   <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
@@ -125,21 +125,21 @@
         <!-- Title date & tags -->
         <div class="post-header">
           <h1 class="entry-title">
-            SpringCould学习笔记(八)
+            SpringCould学习笔记(十一)
             
           </h1>
           <p class="posted-on">
-          2019-05-20
+          2019-05-23
           </p>
           <div class="tags-links">
             
               
-                <a href="/tags/eureka/" rel="tag">
-                  eureka
+                <a href="/tags/zipkin/" rel="tag">
+                  zipkin
                 </a>
               
-                <a href="/tags/SpringCloud Bus/" rel="tag">
-                  SpringCloud Bus
+                <a href="/tags/sleuth/" rel="tag">
+                  sleuth
                 </a>
               
             
@@ -147,15 +147,15 @@
         </div>
         <!-- Post Main Content -->
         <div class="entry-content ">
-          <p>今天是学习微服务的第九天。今天被同步和异步难倒了</p>
+          <p>今天是学习springcloud的第12天。今天学习了<br>服务跟踪</p>
 <a id="more"></a>
-<h2 id="1-异步"><a href="#1-异步" class="headerlink" title="1.异步"></a>1.异步</h2><p>参考网址：<a href="https://blog.csdn.net/zf2014122891/article/details/84557098" target="_blank" rel="noopener">https://blog.csdn.net/zf2014122891/article/details/84557098</a><br>在异步情况下，数据一致性很难保证<br>我做的实战业务流程<br>&lt;img src=”<a href="http://pr6tkgeuu.bkt.clouddn.com//20190521164310.png&gt;" target="_blank" rel="noopener">http://pr6tkgeuu.bkt.clouddn.com//20190521164310.png&gt;</a><br>改造为基于消息队列的异步<br>首先把第四部<code>订单入库</code>改为异步<br>就是在扣完库存之后发送消息。这个地方改为异步(扣完库存之后直接回复用户)。发送的消息发到消息队列里面<br>但是如果<code>订单入库</code>发生错误了呢。方法是重试。因为mq的消息一直在队列里面。不处理成功。直到成功才继续往下操作<br>然后如果把第三部<code>商品服务扣库存</code>也改为异步了呢？<br>有很多中解决办法：<br>这里说一种。<br>就是当创建订单成功之后，发送消息刀mq中，订阅该消息的服务（商品服务）执行库存扣除操作。<br>并且发送消息到mq中（成功，错误都发送消息），然后订单服务订阅这个消息。收到消息之后进行订单生成。如果是<code>错误</code>的话，就不进行订单入库操作。<br>这个中间需要前端来支持。<code>保证一定的时间间隔</code>。就是在执行创建订单到返回消息的这个过程。需要点时间。</p>
-<h2 id="2-服务网关和zuul"><a href="#2-服务网关和zuul" class="headerlink" title="2.服务网关和zuul"></a>2.服务网关和zuul</h2><p>为何要网关服务呢<br>一旦有了网关所有请求都通过它。<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520220325.png"></p>
-<h4 id="2-1-服务网关的要素"><a href="#2-1-服务网关的要素" class="headerlink" title="2.1 服务网关的要素"></a>2.1 服务网关的要素</h4><p>稳定性和高可用，性能和并发性，安全性，扩展性<br>网关是处理非业务相关的绝佳场所<br>协议转发，防刷，日志监控</p>
-<h4 id="2-2-常用的网关方案"><a href="#2-2-常用的网关方案" class="headerlink" title="2.2 常用的网关方案"></a>2.2 常用的网关方案</h4><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520220705.png"></p>
-<h4 id="2-3-Zuul的特点"><a href="#2-3-Zuul的特点" class="headerlink" title="2.3 Zuul的特点"></a>2.3 Zuul的特点</h4><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520220828.png"></p>
-<h4 id="2-4-四种过滤器API"><a href="#2-4-四种过滤器API" class="headerlink" title="2.4 四种过滤器API"></a>2.4 四种过滤器API</h4><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520220926.png"></p>
-<h4 id="2-5-Http请求在ZUUL中的声明周期"><a href="#2-5-Http请求在ZUUL中的声明周期" class="headerlink" title="2.5 Http请求在ZUUL中的声明周期"></a>2.5 Http请求在ZUUL中的声明周期</h4><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520221043.png"></p>
+<h2 id="1-服务跟踪"><a href="#1-服务跟踪" class="headerlink" title="1.服务跟踪"></a>1.服务跟踪</h2><p>微服务架构微服务增多，一个客户端请求形成一个复杂的分布式服务调用链路，如果任何一个服务延迟过高或错误，都会引起请求失败。<br>所以SpringCloud提供了<code>Spring Cloud Sleuth</code>这个组件来追踪服务</p>
+<h2 id="1-1-Spring-Cloud-Sleuth-链路监控"><a href="#1-1-Spring-Cloud-Sleuth-链路监控" class="headerlink" title="1.1 Spring Cloud Sleuth(链路监控)"></a>1.1 Spring Cloud Sleuth(链路监控)</h2><p>首先引入依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-sleuth&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后发送一个请求。<br>在日志信息中可以发现<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190523214936.png"><br>第一个参数是<code>服务名字</code><br>第二个参数是<code>traceID</code>是一条链路的唯一值。<br>第三个参数是<code>spanId</code>一条链路里面可以包含很多条spanID，可以理解为一个基本的工作单元。没产生一个工作单元，就会变个值<br>第四个参数是<code>是否把信息收集并发送出去</code>如果为true。就代表，可以把信息发送出去</p>
+<h2 id="1-2-spring-cloud-starter-zipkin-界面化服务跟踪"><a href="#1-2-spring-cloud-starter-zipkin-界面化服务跟踪" class="headerlink" title="1.2 spring-cloud-starter-zipkin(界面化服务跟踪)"></a>1.2 spring-cloud-starter-zipkin(界面化服务跟踪)</h2><p>引入依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-zipkin&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>因为这个依赖里面包含<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-sleuth&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-sleuth-zipkin&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;--&gt;</span><br></pre></td></tr></table></figure></p>
+<p>所以引用一个就行。<br>我这里实在<code>docker</code>上安装的zipkin<br>访问地址是<code>localhost:9411</code><br>然后添加配置<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">  zipkin:</span><br><span class="line">    base-url: http://localhost:9411</span><br><span class="line">    sender:</span><br><span class="line">      type: web</span><br><span class="line">  sleuth:</span><br><span class="line">    sampler:</span><br><span class="line">      probability: 1</span><br></pre></td></tr></table></figure></p>
+<p>这里需要注意几个点<br>第一：因为我的项目中添加了rabbitmq的组件，所以一定要配置sender.type.web属性 意思是 以web请求发送（参数rabbitmq,kafak,web）<br>第二：zipkin收集数据是有几率的，所以默认是0.1 然后咱们得通过<code>sleuth.sampler.probility: 1</code>设置为百分之百<br>第三：我遇到的一个坑。搞了我挺久的。因为 查看控制台的日志，发现 最后一个参数是<code>true</code>并且是以<code>web</code>发送出去消息的。但是为什么通过<code>zipkin</code>就是看不到服务呢？<br>搞了半天原来是<code>http://localhost:9411</code>注意这里一定要加<code>http://</code><br>在这个可视化工具中可以清楚地看到 。每个服务，每个调用花费的时间了。</p>
 
         </div>
       </article>
@@ -171,8 +171,8 @@
     <script type="text/javascript">
     var disqus_config = function () {
           this.page.url = window.location.href;
-          this.page.identifier = 'post-SpringCloud-SOA8';
-          this.page.title = 'SpringCould学习笔记(八)';
+          this.page.identifier = 'post-SpringCloud-SOA11';
+          this.page.title = 'SpringCould学习笔记(十一)';
       };
     </script>
     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
@@ -186,12 +186,12 @@
     <div class="nav-links">
       
         <div class="nav-previous">
-          <a href="/2019/05/SpringCloud-SOA9/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
+          <a href="/2019/05/SpirngCloud-SOA12/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
         </div>
       
       
         <div class="nav-next">
-          <a href="/2019/05/SpringCloud-SOA7/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+          <a href="/2019/05/SpringCloud-SOA10/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
         </div>
       
     </div>
@@ -264,7 +264,7 @@
   var disqus_shortname = 'hinpc';
 
   
-  var disqus_url = 'http://sunning123.top/2019/05/SpringCloud-SOA8/';
+  var disqus_url = 'http://sunning123.top/2019/05/SpringCloud-SOA11/';
   
 
   (function(){

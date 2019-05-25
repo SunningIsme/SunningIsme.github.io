@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Ning Sun">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="SpringCould学习笔记(九)">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="爆炸头博客">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>SpringCould学习笔记(九) - 爆炸头博客</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://static.hinpc.com/images/2018/logo.svg" alt="爆炸头博客" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            SpringCould学习笔记(九)
+            
+          </h1>
+          <p class="posted-on">
+          2019-05-21
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/zuul/" rel="tag">
+                  zuul
+                </a>
+              
+                <a href="/tags/actuator/" rel="tag">
+                  actuator
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>今天是学习springcloud的第10天。今天主要学习zuul网关</p>
+<a id="more"></a>
+<h2 id="1-zuul的路由"><a href="#1-zuul的路由" class="headerlink" title="1.zuul的路由"></a>1.zuul的路由</h2><p>老样子加依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-netflix-zuul&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后添加配置<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zuul:</span><br><span class="line">  routes:</span><br><span class="line">    product:</span><br><span class="line">      path: /myProduct/**</span><br><span class="line">      sensitiveHeaders:</span><br><span class="line">  ignored-patterns:</span><br><span class="line">    - /**/product/listForOrder</span><br><span class="line">#    - /product/product/listForOrder</span><br><span class="line">#    - /myProduct/product/listForOrder</span><br><span class="line">management:</span><br><span class="line">  endpoints:</span><br><span class="line">    web:</span><br><span class="line">      exposure:</span><br><span class="line">        include: &quot;*&quot;</span><br></pre></td></tr></table></figure></p>
+<p>启动项目<code>http://localhost:9000/myProduct/product/list</code>来访问就好</p>
+<h2 id="2-zuul网关遇到的bug"><a href="#2-zuul网关遇到的bug" class="headerlink" title="2.zuul网关遇到的bug"></a>2.zuul网关遇到的bug</h2><p>第一个是<br><code>SpringCloud使用Zuul出现“Forwarding error”错误解决方法</code><br>我去网上搜索了。一下 大部分都是说是 超时了。但是我设置时间不好用<br>后来发现没有找到服务。<br>之后把配置文件改一下<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190521190709.png"><br>就是下面<code>routes</code>自己定义的规则一定是。eureka中的服务名字<br>第二个bug<br>我想查看一下<code>查看Zuul的路由映射信息</code><br>一直报404错误。后来去网上找。发现得把映射开开<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">management:</span><br><span class="line">  endpoints:</span><br><span class="line">    web:</span><br><span class="line">      exposure:</span><br><span class="line">        include: routes,filters</span><br></pre></td></tr></table></figure></p>
+<p>之后通过<code>http://localhost:9000/actuator/routes/details</code>就可以访问到了<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190521190959.png"><br>第三个bug是<code>cookie是无法传递过去的</code><br>解决办法配置参数<br><code>sensitiveHeaders:</code>把这个属性设置为空</p>
+<h2 id="3-zuul网关实现动态更新"><a href="#3-zuul网关实现动态更新" class="headerlink" title="3.zuul网关实现动态更新"></a>3.zuul网关实现动态更新</h2><p>首先按照之前的bus配置。来放到git上<br>需要注意的点是<br>需要编写个类，用来刷新配置。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class ZuulConfig &#123;</span><br><span class="line"></span><br><span class="line">    @ConfigurationProperties(&quot;zuul&quot;)</span><br><span class="line">    @RefreshScope</span><br><span class="line">    public ZuulProperties zuulProperties()&#123;</span><br><span class="line">        return new ZuulProperties();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>还有个方法。直接写到启动类里面</p>
+<h2 id="4-zuul的特点"><a href="#4-zuul的特点" class="headerlink" title="4.zuul的特点"></a>4.zuul的特点</h2><p>前置(pre)<br>限流 鉴权 参数校验调整<br>后置（Post）<br>统计 日志<br>高可用<br>多个Zuu节点注册到Eureka Server<br>Nginx和Zuul“混搭“</p>
+<h2 id="5-zuul实际操作"><a href="#5-zuul实际操作" class="headerlink" title="5.zuul实际操作"></a>5.zuul实际操作</h2><p>这部分没有遇到什么特别难解决的bug<br>就是分服务的时候出现了找不到主类。然后查看<code>build</code>里面的报错信息发现。是jdk选错了</p>
+<h4 id="5-2-权检"><a href="#5-2-权检" class="headerlink" title="5.2 权检"></a>5.2 权检</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class TokenFilter extends ZuulFilter &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String filterType() &#123;</span><br><span class="line">        return PRE_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int filterOrder() &#123;</span><br><span class="line">        return PRE_DECORATION_FILTER_ORDER - 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean shouldFilter() &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Object run() throws ZuulException &#123;</span><br><span class="line">        System.out.println(&quot;aaa&quot;);</span><br><span class="line">        RequestContext requestContext = RequestContext.getCurrentContext();</span><br><span class="line">        HttpServletRequest request = requestContext.getRequest();</span><br><span class="line">        //这里从url参数里面获取，也可从cookieheader里获取</span><br><span class="line">        String token = request.getParameter(&quot;token&quot;);</span><br><span class="line">        if(StringUtils.isEmpty(token))&#123;</span><br><span class="line"></span><br><span class="line">         requestContext.setSendZuulResponse(false);</span><br><span class="line">            requestContext.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我这里的逻辑是，如果请求带有token才放行<br>这里主要继承ZuulFilter这个类。实现方法<br><code>FilterConstants</code>这个类里面有很多定义的参数。<br>比如我要<code>PRE</code>拦截的时候。区里面找就可以发现<code>PRE_TYPE</code>表示前置拦截<br><code>PRE_DECORATION_FILTER_ORDER</code>这个也是定义的数值。数值越小 越靠前执行。<br>所以要在接收到请求之前发送的化。就得找到对应的优先级数据然后<code>-1</code>就行</p>
+<h4 id="5-1-流量管控"><a href="#5-1-流量管控" class="headerlink" title="5.1 流量管控"></a>5.1 流量管控</h4><p>一般限流执行的时机就是<code>请求被转发之前</code><br>这里采用的是<code>guava</code>提供的<code>令牌筒</code><br>RateLimiter是guava提供的基于令牌桶算法的实现类.<br>执行逻辑<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190522192418.png"><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class RateLimitFilter extends ZuulFilter &#123;</span><br><span class="line">    private static final RateLimiter RATE_LIMITER = RateLimiter.create(100);</span><br><span class="line">    @Override</span><br><span class="line">    public String filterType() &#123;</span><br><span class="line">        return PRE_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int filterOrder() &#123;</span><br><span class="line">        return SERVLET_DETECTION_FILTER_ORDER - 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean shouldFilter() &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Object run() throws ZuulException &#123;</span><br><span class="line">        if(!RATE_LIMITER.tryAcquire())&#123;</span><br><span class="line">            throw new RateLimitException();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>比如我这里的<br><code>private static final RateLimiter RATE_LIMITER = RateLimiter.create(100);</code><br>表示每秒钟往令牌桶里放的<code>令牌</code><br><code>RATE_LIMITER.tryAcquire</code>用这个实现是否拿到了令牌</p>
+<h4 id="5-3-把Zuul网关添加到之前的项目中"><a href="#5-3-把Zuul网关添加到之前的项目中" class="headerlink" title="5.3 把Zuul网关添加到之前的项目中"></a>5.3 把Zuul网关添加到之前的项目中</h4><p>这里没有遇到什么难解决的BUG<br>就是注意的点在于<code>如果要用到cookie的话</code><br>这里可以添加一个全局的允许<code>cookie</code>传递的参数<code>zuul.sensitive-headers:</code>设置为空就好<br>还有一个点<br>要想实现<code>Zuul</code>配置的自动更新<br>需要添加如下代码<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@ConfigurationProperties(&quot;zuul&quot;)</span><br><span class="line">    @RefreshScope</span><br><span class="line">    public ZuulProperties zuulProperties()&#123;</span><br><span class="line">        return new ZuulProperties();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="5-4-权限校验的逻辑"><a href="#5-4-权限校验的逻辑" class="headerlink" title="5.4 权限校验的逻辑"></a>5.4 权限校验的逻辑</h4><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190522193258.png"><br>这个里面，主要包含了两种方法。<br>第一种 就是我项目中实现的。把用户信息存放到redis中。每次校验去redis中取就好。<br>第二种 没有涉及到。需要我之后再看看</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-SpringCloud-SOA9';
+          this.page.title = 'SpringCould学习笔记(九)';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/05/SpringCloud-SOA10/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2019/05/SpringCloud-SOA8/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/SunningIsme" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="https://twitter.com/GallenHu" class="icon icon-twitter" target="_blank">twitter</a>
+            
+              <a href="mailto:1239222923@qq.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onsubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>爆炸头博客 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'http://sunning123.top/2019/05/SpringCloud-SOA9/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>

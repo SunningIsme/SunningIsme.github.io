@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Ning Sun">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="SpringCould学习笔记(十)">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="爆炸头博客">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>SpringCould学习笔记(十) - 爆炸头博客</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://static.hinpc.com/images/2018/logo.svg" alt="爆炸头博客" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            SpringCould学习笔记(十)
+            
+          </h1>
+          <p class="posted-on">
+          2019-05-22
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/Zuul/" rel="tag">
+                  Zuul
+                </a>
+              
+                <a href="/tags/Hystrix/" rel="tag">
+                  Hystrix
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>今天是学习SpringCloud的第11天。<br>今天主要学习了Zuul里面的跨域问题和服务容错和Hystrix</p>
+<a id="more"></a>
+<h2 id="1-Zuul跨域"><a href="#1-Zuul跨域" class="headerlink" title="1. Zuul跨域"></a>1. Zuul跨域</h2><p>什么叫做跨域呢？<br>比如 你的项目是前后端分离。前端用ajax传递过来的数据遵守同源策略（禁止页面加载或执行与自身来源不同的域的任何脚本）</p>
+<p>Zuul解决同源问题的方法<br>1.在被调用的类或方法上添加@CrossOrigin注解<br>2.在Zuul里添加CorsFilter过滤器<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class CorsConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public CorsFilter corsFilter()&#123;</span><br><span class="line">        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span><br><span class="line">        final CorsConfiguration config = new CorsConfiguration();</span><br><span class="line"></span><br><span class="line">        config.setAllowCredentials(true);</span><br><span class="line">        config.setAllowedOrigins(Arrays.asList(&quot;*&quot;));</span><br><span class="line">        config.setAllowedHeaders(Arrays.asList(&quot;*&quot;));</span><br><span class="line">        config.setAllowedMethods(Arrays.asList(&quot;*&quot;));</span><br><span class="line">        config.setMaxAge(300l);</span><br><span class="line"></span><br><span class="line">        source.registerCorsConfiguration(&quot;/**&quot;,config);</span><br><span class="line">         return  new CorsFilter(source);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里先贴上代码。之后我会单拿出一篇文章学习这个跨域问题。</p>
+<h2 id="2-服务容错和Hystrix"><a href="#2-服务容错和Hystrix" class="headerlink" title="2. 服务容错和Hystrix"></a>2. 服务容错和Hystrix</h2><p>雪崩效应<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190522195330.png"><br>这图里面A调用B服务B有调用C服务<br>如果C服务发生故障，B服务就会一直重试请求C服务。因为是同步的吗，然后B服务就会造成资源耗尽<br>然后B服务也就死了。导致C服务也就凉了</p>
+<h4 id="2-1-Spring-Cloud-Hystrix"><a href="#2-1-Spring-Cloud-Hystrix" class="headerlink" title="2.1 Spring Cloud Hystrix"></a>2.1 Spring Cloud Hystrix</h4><p>放雪崩利器   基于Netflix对应的Hystrix<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190522195728.png"></p>
+<h2 id="2-1-Hystrix实现服务降级"><a href="#2-1-Hystrix实现服务降级" class="headerlink" title="2.1 Hystrix实现服务降级"></a>2.1 Hystrix实现服务降级</h2><p>什么是服务降级？当服务器压力剧增的情况下，根据实际业务情况及流量，对一些服务和页面有策略的不处理或换种简单的方式处理，从而释放服务器资源以保证核心交易正常运作或高效运作。<br>如果还是不理解，那么可以举个例子：假如目前有很多人想要给我付钱，但我的服务器除了正在运行支付的服务之外，还有一些其它的服务在运行，比如搜索、定时任务和详情等等。然而这些不重要的服务就占用了JVM的不少内存与CPU资源，为了能把钱都收下来（钱才是目标），我设计了一个动态开关，把这些不重要的服务直接在最外层拒掉，这样处理后的后端处理收钱的服务就有更多的资源来收钱了（收钱速度更快了），这就是一个简单的服务降级的使用场景。<br>Hystrix实现服务降级是非常简单的<br>只需要<code>通过HystrixCommand注解指定</code>和<code>fallbackMethod(回退函数)中具体实现降级逻辑</code><br>具体操作<br>首先引入依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后在主类上添加注解<code>@SpringCloudApplication</code><br>这个注解是个复合注解都包含<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Target(&#123;ElementType.TYPE&#125;)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">@Documented</span><br><span class="line">@Inherited</span><br><span class="line">@SpringBootApplication</span><br><span class="line">@EnableDiscoveryClient</span><br><span class="line">@EnableCircuitBreaker</span><br></pre></td></tr></table></figure></p>
+<p>所以重复的注解就不用写了<br>实现的几种方式<br>第一种：@HystrixCommand(fallbackMethod = “fallback”)  这个后面的fallbackMethod就是制定的降级的方法<br>第二种：设置降级时间。也就是当服务相应时间超过一定的值的时候进行降级（默认是1秒）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@HystrixCommand(commandProperties = &#123;</span><br><span class="line">            @HystrixProperty(name = &quot;execution.isolation.thread.timeoutInMilliseconds&quot;, value = &quot;3000&quot;)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>在你的控制台发现，你被降级的服务一般执行时间是<code>1S左右</code>而不是<code>3秒</code>(我在服务上设置了睡眠时间2S).因为 默认的降级出发时间是<code>1S</code>如果超过1秒了 就降级了直接返回。所以是1S<br>这些参数都是在<code>HystrixCommandProperties</code>这个类下面定义。需要的话可以去看看<br>第三种Feign实现降级<br>因为Feign中已经融合HystrixCommand所以不用添加依赖了<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@FeignClient(name = &quot;product&quot;, fallback = ProductClient.ProductClientFallback.class)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Component</span><br><span class="line">    static class ProductClientFallback implements ProductClient&#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public String GetProductMeg() &#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public List&lt;ProductInfo&gt; listForOrder(List&lt;String&gt; productIdList) &#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void decreaseStock(List&lt;CartDTO&gt; cartDTOList) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这里需要注意<br>一定要有<code>@Component</code>注解。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">feign:</span><br><span class="line">  hystrix:</span><br><span class="line">    enabled: true</span><br></pre></td></tr></table></figure></p>
+<p>配置一定要有。<br>这个降级处理。因为服务器端的服务出现问题或者其他约束，会进入降级模式。<br>但是如果抛出异常 也会进入降级模式的。<br>这个适合服务内部调用的时候（比如并发数太多或者数据库连接太多了）<br><code>@DefaultProperties(defaultFallback = &quot;defalutFallback&quot;)</code><br>这个注解的意思是。默认调用的降级方法<br>这些配置可以写到配置文件中<br>这个配置的是默认的也就是全局的<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hystrix:</span><br><span class="line">  command:</span><br><span class="line">    default:</span><br><span class="line">      execution:</span><br><span class="line">        isolation:</span><br><span class="line">          thread:</span><br><span class="line">            timeoutInMilliseconds: 3000</span><br></pre></td></tr></table></figure></p>
+<p>但是如果想为某个方法配置呢？<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hystrix:</span><br><span class="line">  command:</span><br><span class="line">    getProducInfoList:</span><br><span class="line">      execution:</span><br><span class="line">        isolation:</span><br><span class="line">          thread:</span><br><span class="line">            timeoutInMilliseconds: 5000</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-2-依赖隔离"><a href="#2-2-依赖隔离" class="headerlink" title="2.2 依赖隔离"></a>2.2 依赖隔离</h2><p>使用线程池隔离会为每个<code>HystrixCommand</code>创立一个线程池<br>如果某个<code>HystrixCommand</code>出现延迟过高的情况下，不会对其他服务产生影响<br>Hystrix自送实现了依赖隔离。比如上面的代码加了<code>@HystrixCommand</code>这个框架就自动给这块代码加上了依赖隔离</p>
+<h2 id="2-3-服务熔断"><a href="#2-3-服务熔断" class="headerlink" title="2.3 服务熔断"></a>2.3 服务熔断</h2><p>先贴上代码<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@HystrixCommand(commandProperties = &#123;</span><br><span class="line">            @HystrixProperty(name = &quot;circuitBreaker.enabled&quot;,value=&quot;true&quot;),    //设置熔断</span><br><span class="line">            @HystrixProperty(name = &quot;circuitBreaker.requestVolumeThreshold&quot;,value=&quot;10&quot;), //断路器的最小请求数量</span><br><span class="line">            @HystrixProperty(name = &quot;circuitBreaker.sleepWindowInMilliseconds&quot;,value=&quot;10000&quot;),//时间窗口，休眠时间窗口。结束open状态，设置为半熔断机制</span><br><span class="line">            @HystrixProperty(name = &quot;circuitBreaker.errorThresholdPercentage&quot;, value=&quot;60&quot;)//设置断路器打开的错误百分比条件</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>原理呢就和跳闸一个说法。<br>这里有个原理图<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190523210901.png"><br>如果产生了熔断机制。会直接切断主逻辑调用。<br>这里面有几个状态<code>Closed</code>,<code>Open</code>,<code>Half Open</code><br><code>Closed</code>就是在错误没有达到一定数量的时候。<code>断路器</code>就处于关闭状态<br><code>Open</code>当错误达到一定数量的时候。<code>断路器</code>处于开启状态<br><code>Half Open</code>半阻塞状态，当熔断器变为开启状态后，有一个时间窗口。等过了时间，就把断路器转化为半阻塞状态（允许定量的服务请求。检查这些请求，如果成功数量达到一定比例就会关闭熔断，如果没有达到。就会继续打开熔断）</p>
+<h2 id="2-4-服务熔断可视化组建（hystrix-dashboard）"><a href="#2-4-服务熔断可视化组建（hystrix-dashboard）" class="headerlink" title="2.4 服务熔断可视化组建（hystrix-dashboard）"></a>2.4 服务熔断可视化组建（hystrix-dashboard）</h2><p>使用方法<br>添加两个依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix-dashboard&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.1.1.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后在启动类上加个注解<code>@EnableHystrixDashboard</code><br>然后运行项目<br>也许会报个错误<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190523213317.png"><br>这是因为你的映射地址没有暴露出去<br>所以添加个配置<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">management:</span><br><span class="line">  endpoints:</span><br><span class="line">    web:</span><br><span class="line">      exposure:</span><br><span class="line">        include: &quot;*&quot;</span><br></pre></td></tr></table></figure></p>
+<p>然后访问<code>localhost:8081/hystrix</code>地址就可以访问到了<br>管理页面的信息说明<br><code>https://blog.csdn.net/WYA1993/article/details/82419131</code>这个网址说的很详细。</p>
+<h2 id="2-5-使用postman发送很多请求"><a href="#2-5-使用postman发送很多请求" class="headerlink" title="2.5 使用postman发送很多请求"></a>2.5 使用postman发送很多请求</h2><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190523213825.png"><br>保存一个请求信息然后<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190523213930.png"><br>第一个参数是迭代次数。第二个参数 是间隔时间</p>
+<h2 id="2-6-Zuul超时配置"><a href="#2-6-Zuul超时配置" class="headerlink" title="2.6 Zuul超时配置"></a>2.6 Zuul超时配置</h2><p>就是第一次通过zuul来访问地址的时候。有可能会发生超时现象。这是因为<code>懒加载</code>会导致请求超时（之后就不会出现了）<br>解决办法：<br>因为Zuul里面也依赖了hystrix<br>所以配置<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hystrix:</span><br><span class="line">  command:</span><br><span class="line">    default:</span><br><span class="line">      execution:</span><br><span class="line">        isolation:</span><br><span class="line">          thread:</span><br><span class="line">            timeoutInMilliseconds: 100000</span><br></pre></td></tr></table></figure></p>
+<p>这个和之前的hystrix设置默认时间是一样的。<br>这样就解决了这个问题</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-SpringCloud-SOA10';
+          this.page.title = 'SpringCould学习笔记(十)';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/05/SpringCloud-SOA11/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2019/05/SpringCloud-SOA9/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/SunningIsme" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="https://twitter.com/GallenHu" class="icon icon-twitter" target="_blank">twitter</a>
+            
+              <a href="mailto:1239222923@qq.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onsubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>爆炸头博客 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'http://sunning123.top/2019/05/SpringCloud-SOA10/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>
