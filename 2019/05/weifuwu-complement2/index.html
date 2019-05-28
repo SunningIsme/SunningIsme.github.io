@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Ning Sun">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="微服务补充(二)">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="爆炸头博客">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>微服务补充(二) - 爆炸头博客</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://static.hinpc.com/images/2018/logo.svg" alt="爆炸头博客" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            微服务补充(二)
+            
+          </h1>
+          <p class="posted-on">
+          2019-05-28
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/English/" rel="tag">
+                  English
+                </a>
+              
+                <a href="/tags/Grammar/" rel="tag">
+                  Grammar
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>这篇文章补充了我对HTTP和RPC、Restful风格地址<br>客户端负载均衡和服务端负载均衡<br>以及多模块拆分的作用<br><a id="more"></a></p>
+<h2 id="1-HTTP和RPC"><a href="#1-HTTP和RPC" class="headerlink" title="1.HTTP和RPC"></a>1.HTTP和RPC</h2><p>这个博客介绍的挺形象的：<a href="https://www.jianshu.com/p/2accc2840a1b" target="_blank" rel="noopener">https://www.jianshu.com/p/2accc2840a1b</a><br>我的理解：RPC传送数据的时候，采用二进制传送机制。先得把数据二进制化(序列化)，接收后再转化为java对象(反序列化)。达到<code>远程调用时，要能够像本地调用一样方便，让调用者感知不到远程调用的逻辑</code><br>微服务下使用的是HTTP+RESTFUL方式</p>
+<h2 id="2-Restful风格地址"><a href="#2-Restful风格地址" class="headerlink" title="2.Restful风格地址"></a>2.Restful风格地址</h2><p><code>URI 的设计只要负责把资源通过合理方式暴露出来就可以了。对资源的操作与它无关，操作是通过 HTTP动词来体现，所以REST 通过 URI 暴露资源时，会强调不要在 URI 中出现动词。</code><br>1、url纯命名规范：url中不带大写字母（这里说的url是没有urlencode过的url），多个单词用下划线分隔（广大做java的记得不要在url上去用驼峰命名）。<br>    2、url命名应该是以资源为导向的命名，对资源的操作是由HttpMethod（get、post、put、delete）来决定。所以一般来说url上的单词都应该是名词，一定不要是动词。举个栗子：<br>    对于User这个用户的操作：<br>    新增用户：<a href="http://localhost:8768/user" target="_blank" rel="noopener">http://localhost:8768/user</a> post方法提交;<br>    修改用户：<a href="http://localhost:8768/user" target="_blank" rel="noopener">http://localhost:8768/user</a> put方法提交;<br>    删除用户：<a href="http://localhost:8768/user/123456" target="_blank" rel="noopener">http://localhost:8768/user/123456</a> delete方法提交;<br>    查询用户：<a href="http://localhost:8768/user" target="_blank" rel="noopener">http://localhost:8768/user</a> get方法提交;<br>    不要写成<a href="http://localhost:8768/get_user" target="_blank" rel="noopener">http://localhost:8768/get_user</a> 这样的，因为我们是以资源（user）为导向的restful风格。<br>3、url不要过于简单，在一个项目里面，Controller一般都不会很少，所以要注意对于不同资源的操作作分类，否则会造成极大的不便。下面实例说明一下。<br>根据id查询用户接口<a href="http://localhost:8768/{id}" target="_blank" rel="noopener">http://localhost:8768/{id}</a>  url这样来写似乎也没什么毛病。如果仅仅是一个UserController其中的方法这样写确实没有什么问题。不过如果系统中此时有一个学校相关的Controller，SchoolController，而这个里面刚好有一个查询所有学校的接口<a href="http://localhost:8768/school" target="_blank" rel="noopener">http://localhost:8768/school</a> 那么问题就来了，系统没有办法区分这2个接口了，谁知道是不是有一个id为“school”的用户呢？<br>所以比较好的实践是，接口还是以资源为导向，上面的根据id查询用户的接口应该写成：<a href="http://localhost:8768/user/{id}" target="_blank" rel="noopener">http://localhost:8768/user/{id}</a> 这样就不会出问题了。<br>另外，一定要杜绝root形式（root形式是我自己取的名字，意思就是端口后面直接一个“/”，有点像根目录）的url：<a href="http://localhost:8768/{id}" target="_blank" rel="noopener">http://localhost:8768/{id}</a> 这个url势必会与任何已定义的只有一级的url（如上面的<a href="http://localhost:8768/school）产生冲突。" target="_blank" rel="noopener">http://localhost:8768/school）产生冲突。</a></p>
+<h2 id="3-客户端负载均衡和服务端负载均衡"><a href="#3-客户端负载均衡和服务端负载均衡" class="headerlink" title="3.客户端负载均衡和服务端负载均衡"></a>3.客户端负载均衡和服务端负载均衡</h2><p>来自:<a href="https://blog.csdn.net/u012702547/article/details/77893030" target="_blank" rel="noopener">https://blog.csdn.net/u012702547/article/details/77893030</a><br><code>客户端负载均衡和服务端负载均衡最大的区别在于服务清单所存储的位置</code></p>
+<h3 id="3-1-客户端负载均衡"><a href="#3-1-客户端负载均衡" class="headerlink" title="3.1 客户端负载均衡"></a>3.1 客户端负载均衡</h3><p>在客户端负载均衡中，所有的客户端节点都有一份自己要访问的服务端清单，这些清单统统都是从Eureka服务注册中心获取的。在Spring Cloud中我们如果想要使用客户端负载均衡，方法很简单，开启@LoadBalanced注解即可，这样客户端在发起请求的时候会先自行选择一个服务端，向该服务端发起请求，从而实现负载均衡</p>
+<h3 id="3-2-服务端负载均衡"><a href="#3-2-服务端负载均衡" class="headerlink" title="3.2 服务端负载均衡"></a>3.2 服务端负载均衡</h3><p>当客户端的请求到达负载均衡服务器时，负载均衡服务器按照某种配置好的规则从可用服务端清单中选出一台服务器去处理客户端的请求。这就是服务端负载均衡</p>
+<h2 id="4-多模块拆分的作用"><a href="#4-多模块拆分的作用" class="headerlink" title="4.多模块拆分的作用"></a>4.多模块拆分的作用</h2><p>转自:<a href="http://blog.csdn.net/liupin_2011/article/details/40017837" target="_blank" rel="noopener">http://blog.csdn.net/liupin_2011/article/details/40017837</a><br>使用Java技术开发的工程项目，无论是数据处理系统还是Web网站，随着项目的不断发展，需求的不断细化与添加，工程项目中的代码越来越多，包结构也越来越复杂这时候工程的进展就会遇到各种问题：<br>（1）不同方面的代码之间相互耦合，这时候一系统出现问题很难定位到问题的出现原因，即使定位到问题也很难修正问题，可能在修正问题的时候引入更多的问题。<br>（2）多方面的代码集中在一个整体结构中，新入的开发者很难对整体项目有直观的感受，增加了新手介入开发的成本，需要有一个熟悉整个项目的开发者维护整个项目的结构（通常在项目较大且开发时间较长时这是很难做到的）。<br>（3）开发者对自己或者他人负责的代码边界很模糊，这是复杂项目中最容易遇到的，导致的结果就是开发者很容易修改了他人负责的代码且代码负责人还不知道，责任追踪很麻烦。<br>将一个复杂项目拆分成多个模块是解决上述问题的一个重要方法，多模块的划分可以降低代码之间的耦合性（从类级别的耦合提升到jar包级别的耦合），每个模块都可以是自解释的（通过模块名或者模块文档），模块还规范了代码边界的划分，开发者很容易通过模块确定自己所负责的内容</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-weifuwu-complement2';
+          this.page.title = '微服务补充(二)';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+      
+        <div class="nav-next">
+          <a href="/2019/05/weifuwu-complement/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/SunningIsme" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="https://twitter.com/GallenHu" class="icon icon-twitter" target="_blank">twitter</a>
+            
+              <a href="mailto:1239222923@qq.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onsubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>爆炸头博客 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'http://sunning123.top/2019/05/weifuwu-complement2/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>

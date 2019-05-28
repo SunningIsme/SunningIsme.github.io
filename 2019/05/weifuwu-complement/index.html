@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Ning Sun">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="英语作文">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="爆炸头博客">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>英语作文 - 爆炸头博客</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://static.hinpc.com/images/2018/logo.svg" alt="爆炸头博客" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            英语作文
+            
+          </h1>
+          <p class="posted-on">
+          2019-05-27
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/eureka/" rel="tag">
+                  eureka
+                </a>
+              
+                <a href="/tags/SpringBoot/" rel="tag">
+                  SpringBoot
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>这几篇记录我学习微服务的一些补充</p>
+<a id="more"></a>
+<h2 id="1-如何设计微服务？它设计原则是什么？"><a href="#1-如何设计微服务？它设计原则是什么？" class="headerlink" title="1.如何设计微服务？它设计原则是什么？"></a>1.如何设计微服务？它设计原则是什么？</h2><h3 id="1-1-AKF拆分原则"><a href="#1-1-AKF拆分原则" class="headerlink" title="1.1 AKF拆分原则"></a>1.1 AKF拆分原则</h3><p>AKF扩展立方体<br>微服务拆分方式：按照不同的服务功能进行拆分<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190527214720.png"><br>微服务拆分要点：<br>低耦合、高内聚：一个服务完成一个独立的功能<br>按团队规模，小规模团队维护，快速迭代。<br>AKF扩展立方体（参考《The Art of Scalability》），是一个AKF公司的技术专家抽象总结的应用扩展的三个维度。理论上按照这三个扩展模式，可以将一个单体系统，进行无限扩展。<br>Y轴（功能）：就是按照功能进行拆分，它基于不同的业务拆分。<br>X轴（水平扩展）：很好理解，将微服务运行多个实例，做个集群加负载均衡的模式<br>Z轴（数据分区）：基于类似的数据分区，比如一个互联网打车应用突然火了，用户量激增，集群模式撑不住了，那就按照用户请求的地区进行数据分区，北京、上海、四川等多建几个集群。<br>场景说明：比如滴滴打车，一个集群撑不住时，分了多个集群，后来用户激增还是不够用，经过分析发现是乘客和车主访问量很大，就将滴滴打车拆成了三个服务：乘客服务，车主服务，支付服务。三个服务的业务特点各不相同，独立维护，各水平扩展。</p>
+<h3 id="1-2-前后端分离"><a href="#1-2-前后端分离" class="headerlink" title="1.2 前后端分离"></a>1.2 前后端分离</h3><p>前后端分离原则，简单来讲就是前端和后端的代码分离也就是技术上做分离，我们推荐的模式是最好直接采用物理分离的方式部署，进一步促使进行更彻底的分离。不要继续以前的服务端模板技术，比如JSP，把Java JS HTML CSS都堆到一个页面里，稍复杂的页面就无法维护。<br>这种分离模式的方式有几个好处：<br>1、前后端技术分离，可以由各自的专家来对各自的领域进行优化，这样前端的用户体验优化效果会更好。<br>2、分离模式下，前后端交互界面更加清晰，就剩下了接口和模型，后端的接口简洁明了，更容易维护。<br>3、前端多渠道集成场景更容易实现，后端服务无需变更，采用统一的数据和模型，可以支撑多个前端；例如 微信、h5、安卓、ios</p>
+<h3 id="1-3无状态服务"><a href="#1-3无状态服务" class="headerlink" title="1.3无状态服务"></a>1.3无状态服务</h3><p>对于无状态服务，首先说一下什么是状态 ：如果一个数据需要被多个服务共享，才能完成一笔交易，那么这个数据被称为状态。进而依赖这个“状态”数据的服务被称为有状态服务，反之称为无状态服务。<br>那么这个无状态服务原则并不是说在微服务架构里就不允许存在状态，表达的意思是要把有状态的服务改变为无状态的计算类服务，那么状态数据就相应的迁移到对应的“有状态数据服务”中。<br>场景说明：例如我们以前在本地内存中建立的数据缓存、session缓存，到现在的微服务架构中就应该把这些数据迁移到分布式缓存中存储，让业务服务变成一个无状态的计算节点。迁移后，就可以做到按需动态伸缩，微服务应用在运行时动态增删节点，就不再需要考虑缓存数据如何同步的问题。</p>
+<h3 id="1-4Restful通信风格"><a href="#1-4Restful通信风格" class="headerlink" title="1.4Restful通信风格"></a>1.4Restful通信风格</h3><p>Restful通信风格，有很多好处：<br>1、无状态协议HTTP，具备先天优势，扩展能力很强。例如需要安全加密时，有现成的成熟方案HTTPS可用。<br>2、JSON报文序列化，轻量简单，人与机器均可读，学习成本低，搜索引擎友好。<br>3、语言无关，各大热门语言都提供成熟的Restful API框架，相对其它的一些RPC框架生态更完善。<br>当然在有些特殊业务场景下，也需要采用其他的RPC框架，如thrift，avro-rpc，grpc。但绝大多数情况下Restful就足够用了。</p>
+<h2 id="2-微服务的技术选型"><a href="#2-微服务的技术选型" class="headerlink" title="2.微服务的技术选型"></a>2.微服务的技术选型</h2><p>我们会使用Spring Boot实现微服务实例的开发，使用<code>Spring Cloud Eureka</code>来实现服务的注册与发现，使用<code>Spring Cloud Hystrix</code>的断路器功能来实现服务容错，使用<code>Spring Cloud Ribbon</code>实现服务间的负载均衡，使用<code>Spring Cloud Zuul</code>实现服务网关，使用<code>Spring Cloud Config</code>作为分布式配置中心，使用<code>Springl Cloud sleuth</code>和<code>zipkin</code>来进行服务追踪，使用<code>graylog</code>来进行日志汇总。<br>微服务架构中各个组件的技术选型有很多，对于已经实施过微服务并且项目自成体系的公司来说，Spring Cloud可能并没有太大的吸引力，但对于还未实施微服务或项目没有自成体系的公司来说，Spring Cloud将是一个非常好的选择。</p>
+<h2 id="3-注册中心Eureka的架构原理"><a href="#3-注册中心Eureka的架构原理" class="headerlink" title="3.注册中心Eureka的架构原理"></a>3.注册中心Eureka的架构原理</h2><p>1.Register（服务注册）：把自己的ip port注册给eureka<br>2.Renew（服务续约）：发送心跳， 30秒发送一次心跳，告诉eureka自己还活着<br>3.Eviction（剔除）：超过90秒，eureka认为你死了，从注册表剔除。<br>4.Cancel（服务下线）：provider停止关闭，调用eureka，把自己从注册表剔除，防止consumer调用不存在的服务。<br>5.Get registry（获取注册列表）<br>6.Replicate（复制）：eureka集群自己的数据同步和复制。</p>
+<h2 id="4-Eureka满足的”AP”原则"><a href="#4-Eureka满足的”AP”原则" class="headerlink" title="4.Eureka满足的”AP”原则"></a>4.Eureka满足的”AP”原则</h2><p>数据一致性（consistency）：<br>系统在执行过某项操作后仍然处于一致的状态。在分布式系统中，更新操作执行成功后所有的用户应该读到最新的值，这样的系统被认为是具有强一致性的。等同于所有访问节点访问同一份最新的数据副本；<br>服务可用性(availability)：<br>每一个操作总是能够在一定时间内返回结果，这里需要注意的是“一定时间内”和返回结果。一定时间指的是，在可以容忍的范围内返回结果，结果可以是成功或者失败。<br>分区容错性(partition-tolerance)：<br>在网络分区的情况下，被分隔的节点仍能正常对外服务（分布式集群，数据被分布存储在不同的服务器上，无论什么情况，服务器都能正常被访问）<br>Eureka满足的原则是<code>AP</code>原则放弃了<code>C</code><br>这里所说的放弃一致性，并不是完全放弃数据一致性，而是放弃数据的强一致性，而保留数据的最终一致性。以网络购物为例，对只剩下一件库存的商品，如果同时接受到了两份订单，那么较晚的订单将被告知商品卖完。</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-weifuwu-complement';
+          this.page.title = '英语作文';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/05/weifuwu-complement2/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2019/05/GrayLog3-0/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/SunningIsme" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="https://twitter.com/GallenHu" class="icon icon-twitter" target="_blank">twitter</a>
+            
+              <a href="mailto:1239222923@qq.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onsubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>爆炸头博客 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'http://sunning123.top/2019/05/weifuwu-complement/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>

@@ -134,12 +134,12 @@
           <div class="tags-links">
             
               
-                <a href="/tags/SpringCloud/" rel="tag">
-                  SpringCloud
-                </a>
-              
                 <a href="/tags/eureka/" rel="tag">
                   eureka
+                </a>
+              
+                <a href="/tags/SpringCloud/" rel="tag">
+                  SpringCloud
                 </a>
               
             
@@ -151,8 +151,7 @@
 <a id="more"></a>
 <h2 id="1-分布式下服务注册的地位和原理"><a href="#1-分布式下服务注册的地位和原理" class="headerlink" title="1.分布式下服务注册的地位和原理"></a>1.分布式下服务注册的地位和原理</h2><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513163138.png"><br>在分布式系统中会出现个这种问题，服务器一直在变而且数量特别的多时候，A里面写很多的B的地址吗？显然是不行的。<br>这时候就会用注册中心了，当B启动的时候就会把信息汇报给注册中心<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513163659.png"><br>A怎么能拿到B服务的信息呢。<br>第一种方案：注册中心把所有B的服务都给A，A挑选一个（负载均衡机制）<code>客户端发现</code><br>缺点：得需要自己写代码，找到B<br>第二种方案：<code>代理</code>，就是这个代理先从注册中心挑出来一个，然后A去找代理要就行<code>服务端发现</code><br>优点：对A是透明不可见的。<br>Eureka采用的是客户端发现<br>服务端发现：Nginx，Zookeeper，Kubernetes<br>有个问题：是否能融入其他语言进去呢？<br>微服务的特点：异构<br>不同语言，不同类型的数据库<br>SpringCloud 采用的是REST服务调用方式</p>
 <h2 id="2-微服务拆分问题"><a href="#2-微服务拆分问题" class="headerlink" title="2.微服务拆分问题"></a>2.微服务拆分问题</h2><p>首先确认架构：<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513165437.png"><br>业务形态不适合的：<br>系统中包含很多很多<code>强事务场景</code>的<br>业务相对稳定，迭代周期长<br>访问压力大，可用性要求不高<br>服务拆分的方法论：<br><code>扩展立方模型</code><br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513171804.png"><br>X轴: 水平复制<br>Z轴：数据分区<br>Y轴：功能解耦<br>如何拆分功能<code>功能</code><br><code>但一职责，松耦合，高内聚</code>，每个服务只负责单一的职责<br><code>关注点分离</code><br>按指责：给我们的服务进行分类（订单，商品，前端，后端）<br>按通用性 ：一些基础组件，消息服务，用户服务<br>按粒度级别：<br>服务和数据的关系<br>先考虑业务功能，在考虑数据（先查分业务功能，在拆分数据）<br>无状态服务<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513181952.png"></p>
-<h2 id="3-康威定律"><a href="#3-康威定律" class="headerlink" title="3.康威定律"></a>3.康威定律</h2><p>微服务的理论基础<br>任何组织在设计一套系统时，所交付的设计方案结构上都与该结构的沟通结构保持一致。</p>
-<p>这部分学习的有点迷糊。之后做真实的案例的时候才行。</p>
+<h2 id="3-康威定律"><a href="#3-康威定律" class="headerlink" title="3.康威定律"></a>3.康威定律</h2><p>微服务的理论基础<br>任何组织在设计一套系统时，所交付的设计方案结构上都与该结构的沟通结构保持一致。<br><code>共同的问题会影响系统的设计</code><br>这部分学习的有点迷糊。之后做真实的案例的时候才行。</p>
 <h2 id="4-springcloud实战代码编写"><a href="#4-springcloud实战代码编写" class="headerlink" title="4.springcloud实战代码编写"></a>4.springcloud实战代码编写</h2><p>这里制铁出遇到的坑<br>第一个坑<br><code>Completed shut down of DiscoveryClient</code><br>解决办法在<code>pom.xml</code>里面添加web依赖<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
 <p>第二个坑<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190513213023.png"><br>我去百度搜了搜说是时区问题，在我的mysql客户端输入<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show variables like &apos;%time_zone%&apos;;</span><br><span class="line">set global time_zone=&apos;+8:00&apos;;</span><br></pre></td></tr></table></figure></p>
 <p>就解决了<br>第三个坑<br>就是Idea的使用的坑<br>因为以前一直使用的是<code>Eclipse</code><br>所以一些操作不太流畅。比如：查找替换Crtl+shift+R , 以前用的Alt+\也不好用了也就是补全代码</p>
