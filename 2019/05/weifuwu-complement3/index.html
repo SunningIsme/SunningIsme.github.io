@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Ning Sun">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="微服务补充(二)">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="爆炸头博客">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>微服务补充(二) - 爆炸头博客</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://static.hinpc.com/images/2018/logo.svg" alt="爆炸头博客" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            微服务补充(二)
+            
+          </h1>
+          <p class="posted-on">
+          2019-05-29
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/springboot/" rel="tag">
+                  springboot
+                </a>
+              
+                <a href="/tags/springcloud/" rel="tag">
+                  springcloud
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>补充学习feign<br><a id="more"></a><br>mvn spring-boot:run</p>
+<h2 id="1-feigin实现的服务见通信优化"><a href="#1-feigin实现的服务见通信优化" class="headerlink" title="1.feigin实现的服务见通信优化"></a>1.feigin实现的服务见通信优化</h2><p>###1.1加入基于Gzip压缩算法，提升网络通信速度<br>1.gzip介绍：gzip是一种数据格式，采用用deflate算法压缩data；gzip是一种流行的文件压缩算法，应用十分广泛，尤其是在Linux平台。<br>2.gzip能力：当Gzip压缩到一个纯文本文件时，效果是非常明显的，大约可以减少70％以上的文件大小。<br>3.gzip作用：网络数据经过压缩后实际上降低了网络传输的字节数，最明显的好处就是可以加快网页加载的速度。网页加载速度加快的好处不言而喻，除了节省流量，改善用户的浏览体验外，另一个潜在的好处是Gzip与搜索引擎的抓取工具有着更好的关系。例如 Google就可以通过直接读取gzip文件来比普通手工抓取 更快地检索网页。</p>
+<p>####1.1.1HTTP协议中关于压缩传输的规定<br>第一：客户端向服务器请求中带有：Accept-Encoding:gzip, deflate 字段，向服务器表示，客户端支持的压缩格式（gzip或者deflate)，如果不发送该消息头，服务器是不会压缩的。<br>第二：服务端在收到请求之后，如果发现请求头中含有Accept-Encoding字段，并且支持该类型的压缩，就对响应报文压缩之后返回给客户端，并且携带Content-Encoding:gzip消息头，表示响应报文是根据该格式压缩过的。<br>第三：客户端接收到请求之后，先判断是否有Content-Encoding消息头，如果有，按该格式解压报文。否则按正常报文处理。</p>
+<h2 id="2-采用连接池，提升Feign的并发吞吐量"><a href="#2-采用连接池，提升Feign的并发吞吐量" class="headerlink" title="2.采用连接池，提升Feign的并发吞吐量"></a>2.采用连接池，提升Feign的并发吞吐量</h2><p>1.两台服务器建立http连接的过程是很复杂的一个过程，涉及到多个数据包的交换，并且也很耗时间。<br>2.Http连接需要的3次握手4次分手开销很大，这一开销对于大量比较小的http消息来说更大。<br>解决办法：<br>4.HttpClient相比传统JDK自带的URLConnection，它封装了访问http的请求头，参数，内容体，响应等等；它不仅使客户端发送HTTP请求变得容易，而且也方便了开发人员测试接口（基于Http协议的），即提高了开发的效率，也方便提高代码的健壮性；另外高并发大量的请求网络的时候，还是用“连接池”提升吞吐量。</p>
+<h2 id="3-ribbon的重试配置"><a href="#3-ribbon的重试配置" class="headerlink" title="3.ribbon的重试配置"></a>3.ribbon的重试配置</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#局部配置,针对某个provider配置</span><br><span class="line"># 对所有操作请求都进行重试</span><br><span class="line">mall-product.ribbon.OkToRetryOnAllOperations=true</span><br><span class="line"># 对当前实例的重试次数</span><br><span class="line">mall-product.ribbon.MaxAutoRetries=2</span><br><span class="line"># 切换实例的重试次数</span><br><span class="line">mall-product.ribbon.MaxAutoRetriesNextServer=0</span><br><span class="line"># 请求连接的超时时间</span><br><span class="line">mall-product.ribbon.ConnectTimeout=3000</span><br><span class="line"># 请求处理的超时时间</span><br><span class="line">mall-product.ribbon.ReadTimeout=3000</span><br><span class="line"># 指定具体的服务实例清单</span><br><span class="line"># mall-product.ribbon.listOfServers=</span><br></pre></td></tr></table></figure>
+<h2 id="3-同步和异步的区别"><a href="#3-同步和异步的区别" class="headerlink" title="3.同步和异步的区别"></a>3.同步和异步的区别</h2><p>转自:<a href="https://blog.csdn.net/zf2014122891/article/details/84557098" target="_blank" rel="noopener">https://blog.csdn.net/zf2014122891/article/details/84557098</a></p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-weifuwu-complement3';
+          this.page.title = '微服务补充(二)';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/05/message-oriented-middleware/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2019/05/weifuwu-complement2/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/SunningIsme" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="https://twitter.com/GallenHu" class="icon icon-twitter" target="_blank">twitter</a>
+            
+              <a href="mailto:1239222923@qq.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onsubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>爆炸头博客 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'http://sunning123.top/2019/05/weifuwu-complement3/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>
