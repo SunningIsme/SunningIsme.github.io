@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Ning Sun">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="微信授权">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="爆炸头博客">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>微信授权 - 爆炸头博客</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://static.hinpc.com/images/2018/logo.svg" alt="爆炸头博客" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            微信授权
+            
+          </h1>
+          <p class="posted-on">
+          2019-06-04
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/weixin/" rel="tag">
+                  weixin
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>微信用户授权信息。我之前写过代码，但是有点忘了<br>这篇文章是让我回忆和记下我遇到的坑的一篇文章</p>
+<a id="more"></a>
+<h2 id="1-编写微信授权后台代码"><a href="#1-编写微信授权后台代码" class="headerlink" title="1.编写微信授权后台代码"></a>1.编写微信授权后台代码</h2><h3 id="1-1首先编写"><a href="#1-1首先编写" class="headerlink" title="1.1首先编写"></a>1.1首先编写</h3><p>也就是这里后台调用的controller<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190604185242.png" alt><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Controller</span><br><span class="line">//一会在设置的URL里面就设置上这个路由</span><br><span class="line">@RequestMapping(&quot;wechat&quot;)</span><br><span class="line">public class WechatController &#123;</span><br><span class="line">	</span><br><span class="line">	private static Logger log = LoggerFactory.getLogger(WechatController.class);</span><br><span class="line">	</span><br><span class="line">	@RequestMapping(method = &#123;RequestMethod.GET&#125;)</span><br><span class="line">	public void doGet(HttpServletRequest request,HttpServletResponse response) &#123;</span><br><span class="line">		System.err.println(&quot;进入了wechat&quot;);</span><br><span class="line">		log.debug(&quot;weixin get...&quot;);</span><br><span class="line">		//微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数</span><br><span class="line">		String signature = request.getParameter(&quot;signature&quot;);</span><br><span class="line">		//时间戳</span><br><span class="line">		String timestamp = request.getParameter(&quot;timestamp&quot;);</span><br><span class="line">		//随机数</span><br><span class="line">		String nonce = request.getParameter(&quot;nonce&quot;);</span><br><span class="line">		//随机字符串</span><br><span class="line">		String echostr = request.getParameter(&quot;echostr&quot;);</span><br><span class="line">		//通过检验signature对请求进行校验，若校验成功则原样返回echostr,表示介入成功，否则介入失败</span><br><span class="line">		PrintWriter out =null;</span><br><span class="line">		try &#123;</span><br><span class="line">			out = response.getWriter();</span><br><span class="line">			if(SignUtil.checkSignature(signature, timestamp, nonce)) &#123;</span><br><span class="line">				System.err.println(&quot;weixin get success......&quot;);</span><br><span class="line">				log.debug(&quot;weixin get success.....&quot;);</span><br><span class="line">				out.print(echostr);</span><br><span class="line">				System.out.println(&quot;1&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;catch(IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;finally&#123;</span><br><span class="line">			if(out!=null) &#123;</span><br><span class="line">				out.close();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static boolean checkSignature(String signature,String timestamp,String nonce) &#123;</span><br><span class="line">		String[] arr = new String[] &#123;token,timestamp,nonce&#125;;</span><br><span class="line">		//将token,timestamp,nonce三个参数进行字典序排序</span><br><span class="line">		Arrays.sort(arr);</span><br><span class="line">		System.err.println(arr);</span><br><span class="line">		StringBuilder content = new StringBuilder();</span><br><span class="line">		for(int i=0;i&lt;arr.length;i++) &#123;</span><br><span class="line">			content.append(arr[i]);</span><br><span class="line">		&#125;</span><br><span class="line">		String tmpStr = null;</span><br><span class="line">		//MessageDigest是用来加密的</span><br><span class="line">		MessageDigest md = null;</span><br><span class="line">		try &#123;</span><br><span class="line">			md = MessageDigest.getInstance(&quot;SHA-1&quot;);</span><br><span class="line">			//将三个参数字符串拼接成一个字符串进行sha1加密</span><br><span class="line">			byte[] digest = md.digest(content.toString().getBytes());</span><br><span class="line">			tmpStr = byteToStr(digest);</span><br><span class="line">		&#125;catch(NoSuchAlgorithmException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		content = null;</span><br><span class="line">		return tmpStr !=null ? tmpStr.equals(signature.toUpperCase()) : false;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>这个URL的作用是<code>此信息需要你有自己的服务器资源，填写的URL需要正确响应微信发送的Token验证</code><br>我觉得就是为了验证你的后台服务器是否存在并且可以运行。<br>我这里 是通过<code>SHA-1</code>加密。然后和微信传过来的<code>signature</code>进行比较。<br>如果成功的话就返回。</p>
+<h3 id="1-2填写授权回调页面域名"><a href="#1-2填写授权回调页面域名" class="headerlink" title="1.2填写授权回调页面域名"></a>1.2填写授权回调页面域名</h3><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190604190056.png" alt><br>我这里用的是我申请好的域名，没有的话  可以运用<code>内网穿透</code> 使得外网可以访问</p>
+<h3 id="1-3编写用户授权接受信息代码"><a href="#1-3编写用户授权接受信息代码" class="headerlink" title="1.3编写用户授权接受信息代码"></a>1.3编写用户授权接受信息代码</h3><p>这里主要是几个步骤<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190604190300.png" alt><br>官方文档:<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842" target="_blank" rel="noopener">https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842</a><br>代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;wechatlogin&quot;)</span><br><span class="line">public class WechatLoginController &#123;</span><br><span class="line">	</span><br><span class="line">	private static Logger log = LoggerFactory.getLogger(WechatLoginController.class);</span><br><span class="line">	private static final String FRONTEND =&quot;1&quot;;</span><br><span class="line">	private static final String SHOPEND=&quot;2&quot;;</span><br><span class="line">	</span><br><span class="line">	@Autowired</span><br><span class="line">	private PersonInfoService personInfoService;</span><br><span class="line">	@Autowired</span><br><span class="line">	private WechatAuthService wechatAuthService;</span><br><span class="line">	</span><br><span class="line">	@RequestMapping(value=&quot;/logincheck&quot;,method = &#123;RequestMethod.GET&#125;)</span><br><span class="line">	public String doGet(HttpServletRequest request,HttpServletResponse response) &#123;</span><br><span class="line">		System.err.println(&quot;weixin login get...&quot;);</span><br><span class="line">		log.debug(&quot;weixin login get...&quot;);</span><br><span class="line">		//通过微信公众号传输过来的code,通过code可获取access_token,进而获取用户信息</span><br><span class="line">		String code =request.getParameter(&quot;code&quot;);</span><br><span class="line">		System.out.println(&quot;2&quot;);</span><br><span class="line">		//这个state可以用来传我们自定义的信息，方便程序调用，这里也可以不用</span><br><span class="line">		String roleType = request.getParameter(&quot;state&quot;);</span><br><span class="line">		System.err.println(&quot;weixin login code;&quot;+code);</span><br><span class="line">		log.debug(&quot;weixin login code;&quot;+code);</span><br><span class="line">		WechatUser user =null;</span><br><span class="line">		String openId = null;</span><br><span class="line">		WechatAuth auth = null;</span><br><span class="line">		if(null!=code) &#123;</span><br><span class="line">			UserAccessToken token;</span><br><span class="line">			try&#123;</span><br><span class="line">			token = WechatUtil.getUserAccessToken(code);</span><br><span class="line">			System.out.println(&quot;2&quot;);</span><br><span class="line">			log.debug(&quot;weixin login token:&quot; +token.toString());</span><br><span class="line">			//通过token获取accessToken</span><br><span class="line">			String accessToken = token.getAccessToken();</span><br><span class="line">			//通过token获取openId</span><br><span class="line">			openId =token.getOpenId();</span><br><span class="line">			//通过access_token和openId获取用户昵称等信息</span><br><span class="line">			user = WechatUtil.getUserInfo(accessToken, openId);</span><br><span class="line">			System.out.println(&quot;2&quot;);</span><br><span class="line">			System.err.println(&quot;weixin login user:&quot;+user.toString());</span><br><span class="line">			System.out.println(&quot;2&quot;);</span><br><span class="line">			log.debug(&quot;weixin login user:&quot;+user.toString());</span><br><span class="line">			request.getSession().setAttribute(&quot;openId&quot;, openId);</span><br><span class="line">			System.out.println(&quot;2&quot;);</span><br><span class="line">			auth = wechatAuthService.getWechatAuthByOpenId(openId);</span><br><span class="line">			System.out.println(&quot;2&quot;);</span><br><span class="line">			&#125;catch(Exception e) &#123;</span><br><span class="line">				System.err.println(&quot;error in getUserAccessToken or getUserInfo or findByOpenId:&quot;+e.toString());</span><br><span class="line">				log.error(&quot;error in getUserAccessToken or getUserInfo or findByOpenId:&quot;+e.toString());</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		// ======todo begin======</span><br><span class="line">        // 前面咱们获取到openId后，可以通过它去数据库判断该微信帐号是否在我们网站里有对应的帐号了，</span><br><span class="line">        // 没有的话这里可以自动创建上，直接实现微信与咱们网站的无缝对接。</span><br><span class="line">        // ======todo end======</span><br><span class="line">		if(auth ==null) &#123;</span><br><span class="line">			PersonInfo personInfo = WechatUtil.getPersonInfoFromRequest(user);</span><br><span class="line">			auth = new WechatAuth();</span><br><span class="line">			auth.setOpenId(openId);</span><br><span class="line">			if(FRONTEND.equals(roleType)) &#123;</span><br><span class="line">				personInfo.setUserType(1);</span><br><span class="line">			&#125;else &#123;</span><br><span class="line">				personInfo.setUserType(2);</span><br><span class="line">			&#125;</span><br><span class="line">		auth.setPersonInfo(personInfo);</span><br><span class="line">		WechatAuthExecution we = wechatAuthService.register(auth);</span><br><span class="line">		if(we.getState()!=WechatAuthStateEnum.SUCCESS.getState()) &#123;</span><br><span class="line">			return null;</span><br><span class="line">		&#125;else &#123;</span><br><span class="line">			personInfo = personInfoService.getPersonInfoById(auth.getPersonInfo().getUserId());</span><br><span class="line">			request.getSession().setAttribute(&quot;user&quot;, personInfo);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">		if(FRONTEND.equals(roleType)) &#123;</span><br><span class="line">			return &quot;frontend/index&quot;;</span><br><span class="line">		&#125;else &#123;</span><br><span class="line">			return &quot;shopadmin/sholist&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过<code>code</code>获取<code>access_token以及openId和其他相关信息</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static UserAccessToken getUserAccessToken(String code) &#123;</span><br><span class="line">		//测试号里面的appId</span><br><span class="line">		String appId = &quot;wx750a832e6d6140ff&quot;;</span><br><span class="line">		log.debug(&quot;appId&quot;+appId);</span><br><span class="line">		//测试号信息里的appsecret</span><br><span class="line">		String appsecret =&quot;111111111111111&quot;;</span><br><span class="line">		log.debug(&quot;secret:&quot;+appsecret);</span><br><span class="line">		//根据传入的code，拼接出访问微信定义好的接口的URL</span><br><span class="line">		String url = &quot;https://api.weixin.qq.com/sns/oauth2/access_token?appid=&quot; + appId + &quot;&amp;secret=&quot; + appsecret</span><br><span class="line">                + &quot;&amp;code=&quot; + code + &quot;&amp;grant_type=authorization_code&quot;;</span><br><span class="line">		//向相应URL发送请求获取token json字符串</span><br><span class="line">		String tokenStr = httpsRequest(url,&quot;GET&quot;,null);</span><br><span class="line">		log.debug(&quot;userAccessToken:&quot;+tokenStr);</span><br><span class="line">		UserAccessToken token = new UserAccessToken();</span><br><span class="line">		ObjectMapper objectMapper = new ObjectMapper();</span><br><span class="line">		</span><br><span class="line">		try &#123;</span><br><span class="line">            // 将json字符串转换成相应对象</span><br><span class="line">            token = objectMapper.readValue(tokenStr, UserAccessToken.class);</span><br><span class="line">        &#125; catch (JsonParseException e) &#123;</span><br><span class="line">            log.error(&quot;获取用户accessToken失败: &quot; + e.getMessage());</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (JsonMappingException e) &#123;</span><br><span class="line">            log.error(&quot;获取用户accessToken失败: &quot; + e.getMessage());</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            log.error(&quot;获取用户accessToken失败: &quot; + e.getMessage());</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        if (token == null) &#123;</span><br><span class="line">            log.error(&quot;获取用户accessToken失败。&quot;);</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        return token;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class UserAccessToken &#123;</span><br><span class="line">	</span><br><span class="line">	//获取收到的凭证</span><br><span class="line">	@JsonProperty(&quot;access_token&quot;)</span><br><span class="line">	private String accessToken;</span><br><span class="line">	//凭证有效事时间</span><br><span class="line">	@JsonProperty(&quot;expires_in&quot;)</span><br><span class="line">	private String expiresIn;</span><br><span class="line">	//表示更新令牌，用来获取下一次的访问令牌，这里没太大用</span><br><span class="line">	@JsonProperty(&quot;refresh_token&quot;)</span><br><span class="line">	private String refreshToken;</span><br><span class="line">	//该用户再次公众号下的身份标识，对于此微信具有唯一性</span><br><span class="line">	@JsonProperty(&quot;openid&quot;)</span><br><span class="line">	private String openId;</span><br><span class="line">	//表示权限范围，这里可省略</span><br><span class="line">	@JsonProperty(&quot;scope&quot;)</span><br><span class="line">	private String scope;</span><br><span class="line">	public String getAccessToken() &#123;</span><br><span class="line">		return accessToken;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setAccessToken(String accessToken) &#123;</span><br><span class="line">		this.accessToken = accessToken;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getExpiresIn() &#123;</span><br><span class="line">		return expiresIn;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setExpiresIn(String expiresIn) &#123;</span><br><span class="line">		this.expiresIn = expiresIn;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getRefreshToken() &#123;</span><br><span class="line">		return refreshToken;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setRefreshToken(String refreshToken) &#123;</span><br><span class="line">		this.refreshToken = refreshToken;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getOpenId() &#123;</span><br><span class="line">		return openId;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setOpenId(String openId) &#123;</span><br><span class="line">		this.openId = openId;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getScope() &#123;</span><br><span class="line">		return scope;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setScope(String scope) &#123;</span><br><span class="line">		this.scope = scope;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过<code>openid获取用户信息</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static WechatUser getUserInfo(String accessToken, String openId) &#123;</span><br><span class="line">        // 根据传入的accessToken以及openId拼接出访问微信定义的端口并获取用户信息的URL</span><br><span class="line">        String url = &quot;https://api.weixin.qq.com/sns/userinfo?access_token=&quot; + accessToken + &quot;&amp;openid=&quot; + openId</span><br><span class="line">                + &quot;&amp;lang=zh_CN&quot;;</span><br><span class="line">        // 访问该URL获取用户信息json 字符串</span><br><span class="line">        String userStr = httpsRequest(url, &quot;GET&quot;, null);</span><br><span class="line">        log.debug(&quot;user info :&quot; + userStr);</span><br><span class="line">        WechatUser user = new WechatUser();</span><br><span class="line">        ObjectMapper objectMapper = new ObjectMapper();</span><br><span class="line">        try &#123;</span><br><span class="line">            // 将json字符串转换成相应对象</span><br><span class="line">            user = objectMapper.readValue(userStr, WechatUser.class);</span><br><span class="line">        &#125; catch (JsonParseException e) &#123;</span><br><span class="line">            log.error(&quot;获取用户信息失败: &quot; + e.getMessage());</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (JsonMappingException e) &#123;</span><br><span class="line">            log.error(&quot;获取用户信息失败: &quot; + e.getMessage());</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            log.error(&quot;获取用户信息失败: &quot; + e.getMessage());</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        if (user == null) &#123;</span><br><span class="line">            log.error(&quot;获取用户信息失败。&quot;);</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        return user;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样就获得了用户信息了<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class WechatUser implements Serializable&#123;</span><br><span class="line">	/**</span><br><span class="line">	 * 微信用户实体类</span><br><span class="line">	 */</span><br><span class="line">	//序列化的作用便于数据传输，尤其是在远程调用的时候！</span><br><span class="line">	public static final long serialVersionUID = -4684067645282292327L;</span><br><span class="line">	//openId,标识该公众号下面的该用户的唯一ID</span><br><span class="line">	@JsonProperty(&quot;openid&quot;)</span><br><span class="line">	private String openId;</span><br><span class="line">	//用户昵称</span><br><span class="line">	@JsonProperty(&quot;nickname&quot;)</span><br><span class="line">	private String nickName;</span><br><span class="line">	//性别</span><br><span class="line">	@JsonProperty(&quot;sex&quot;)</span><br><span class="line">	private String sex;</span><br><span class="line">	@JsonProperty(&quot;province&quot;)</span><br><span class="line">	private String province;</span><br><span class="line">	@JsonProperty(&quot;city&quot;)</span><br><span class="line">	private String city;</span><br><span class="line">	@JsonProperty(&quot;country&quot;)</span><br><span class="line">	private String country;</span><br><span class="line">	//头像图片地址</span><br><span class="line">	@JsonProperty(&quot;headimgurl&quot;)</span><br><span class="line">	private String headimgurl;</span><br><span class="line">	//语言</span><br><span class="line">	@JsonProperty(&quot;language&quot;)</span><br><span class="line">	private String language;</span><br><span class="line">	//用户权限，这里没什么用</span><br><span class="line">	@JsonProperty(&quot;privilege&quot;)</span><br><span class="line">	private String[] privilege;</span><br><span class="line">	public String getOpenId() &#123;</span><br><span class="line">		return openId;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setOpenId(String openId) &#123;</span><br><span class="line">		this.openId = openId;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getNickName() &#123;</span><br><span class="line">		return nickName;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setNickName(String nickName) &#123;</span><br><span class="line">		this.nickName = nickName;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getSex() &#123;</span><br><span class="line">		return sex;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setSex(String sex) &#123;</span><br><span class="line">		this.sex = sex;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getProvince() &#123;</span><br><span class="line">		return province;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setProvince(String province) &#123;</span><br><span class="line">		this.province = province;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getCity() &#123;</span><br><span class="line">		return city;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setCity(String city) &#123;</span><br><span class="line">		this.city = city;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getCountry() &#123;</span><br><span class="line">		return country;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setCountry(String country) &#123;</span><br><span class="line">		this.country = country;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getHeadimgurl() &#123;</span><br><span class="line">		return headimgurl;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setHeadimgurl(String headimgurl) &#123;</span><br><span class="line">		this.headimgurl = headimgurl;</span><br><span class="line">	&#125;</span><br><span class="line">	public String getLanguage() &#123;</span><br><span class="line">		return language;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setLanguage(String language) &#123;</span><br><span class="line">		this.language = language;</span><br><span class="line">	&#125;</span><br><span class="line">	public String[] getPrivilege() &#123;</span><br><span class="line">		return privilege;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setPrivilege(String[] privilege) &#123;</span><br><span class="line">		this.privilege = privilege;</span><br><span class="line">	&#125;</span><br><span class="line">	public static long getSerialversionuid() &#123;</span><br><span class="line">		return serialVersionUID;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="1-5遇到的坑"><a href="#1-5遇到的坑" class="headerlink" title="1.5遇到的坑"></a>1.5遇到的坑</h3><p>首先第一个坑就是<code>当时一直报参数错误。进了方法，缺返回500</code><br>原因，我看报错日志发现。我的数据库<code>性别字段的大小设置的太小了。我改成了10就好用了</code><br>第二个坑就是<br><code>&amp;scope参数有两个 一个是snsapi_base另一个是snsapi_userinfo</code><br>这两个参数的区别<br>snsapi_base:以snsapi_base为scope发起的网页授权，是用来获取进入页面的用户的openid的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（往往是业务页面）<br>snsapi_userinfo：以snsapi_userinfo为scope发起的网页授权，是用来获取用户的基本信息的。但这种授权需要用户手动同意，并且由于用户同意过，所以无须关注，就可在授权后获取该用户的基本信息。<br>因为我在电脑上用的微信开发者工具进行调试的。<br>但是发现<code>snsapi_userinfo</code>如果使用这个参数的话就会报错。(snsapi_base这个参数是好用的)<br>后来我灵机一动，我把它发到手机上访问网址发现，可以访问。<br>我也不知道为什么会出现这种情况<br>第三个坑就是<br>我把访问我页面的连接给我同学发了过去。<br>但是他们访问时候出现<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190604191844.png" alt><br>但是<code>snsapi_userinfo</code>这个参数的作用不就是，不用关注公众号就可以访问的吗<br>后来去网上搜了搜 网上给的答案是<br><code>因为我用的是测试号，所以会有限制 而 服务好就没事</code><br>回答的网址:<a href="https://www.copylian.com/technology/186.html" target="_blank" rel="noopener">https://www.copylian.com/technology/186.html</a></p>
+<h2 id="SDK方式开发微信"><a href="#SDK方式开发微信" class="headerlink" title="SDK方式开发微信"></a>SDK方式开发微信</h2><p>这个方式就不用自己写接口类了。<br>直接调用他们写好的就行。<br>我们可以去github上找一找，里面写清楚了 怎么使用 这个接口<br>我找的是:<br><a href="https://github.com/Wechat-Group/WxJava" target="_blank" rel="noopener">https://github.com/Wechat-Group/WxJava</a></p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-weixinshouquan';
+          this.page.title = '微信授权';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+      
+        <div class="nav-next">
+          <a href="/2019/06/redis/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/SunningIsme" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="https://twitter.com/GallenHu" class="icon icon-twitter" target="_blank">twitter</a>
+            
+              <a href="mailto:1239222923@qq.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onsubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>爆炸头博客 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'http://sunning123.top/2019/06/weixinshouquan/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>
