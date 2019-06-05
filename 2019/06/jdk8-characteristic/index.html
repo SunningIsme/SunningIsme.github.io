@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="Ning Sun">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="JDK8新特性学习">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="爆炸头网，分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="爆炸头博客">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>JDK8新特性学习 - 爆炸头博客</title>
+
+
+  <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://static.hinpc.com/images/2018/logo.svg" alt="爆炸头博客" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            JDK8新特性学习
+            
+          </h1>
+          <p class="posted-on">
+          2019-06-05
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/Grammar/" rel="tag">
+                  Grammar
+                </a>
+              
+                <a href="/tags/jdk8/" rel="tag">
+                  jdk8
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content ">
+          <p>Java 8 (又称为 jdk 1.8) 是 Java 语言开发的一个主要版本。 Oracle 公司于 2014 年 3 月 18 日发布 Java 8 ，它支持函数式编程，新的 JavaScript 引擎，新的日期 API，新的Stream API 等。</p>
+<p>在最近看的一些代码中，发现他们都是用的jdk8的新特性。看的有点迷糊，所以特地来学习一下<br><a id="more"></a><br>转自菜鸟教程：<a href="https://www.runoob.com/java/java8-lambda-expressions.html" target="_blank" rel="noopener">https://www.runoob.com/java/java8-lambda-expressions.html</a></p>
+<h2 id="1-Lambda-表达式"><a href="#1-Lambda-表达式" class="headerlink" title="1.Lambda 表达式"></a>1.Lambda 表达式</h2><p>Lambda允许把函数作为一个方法的参数（函数作为参数传递进方法中),或者是作为一个接口的实现<br>四个重要特性：<br>可选类型声明：不需要声明参数类型，编译器可以统一识别参数值。<br>可选的参数圆括号：一个参数无需定义圆括号，但多个参数需要定义圆括号。<br>可选的大括号：如果主体包含了一个语句，就不需要使用大括号。<br>可选的返回关键字：如果主体只有一个表达式返回值则编译器会自动返回值，大括号需要指定明表达式返回了一个数值。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Lambda &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        GreetingService greetService1 = message -&gt;</span><br><span class="line">                System.out.println(&quot;Hello &quot; + message);</span><br><span class="line">        greetService1.sayMessage(&quot;a&quot;);</span><br><span class="line">        GreetingService greetingService2 = message -&gt;</span><br><span class="line">                System.out.println(&quot;ffff&quot;+message);</span><br><span class="line">        greetingService2.sayMessage(&quot;b&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    interface MathOperation &#123;</span><br><span class="line">        int operation(int a, int b);</span><br><span class="line">    &#125;</span><br><span class="line">    interface GreetingService &#123;</span><br><span class="line">        void sayMessage(String message);</span><br><span class="line">    &#125;</span><br><span class="line">    private int operate(int a, int b, MathOperation mathOperation)&#123;</span><br><span class="line">        return mathOperation.operation(a, b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这块代码就表示了<code>免去了使用匿名方法的麻烦</code><br><code>lambda 表达式只能引用标记了 final 的外层局部变量，这就是说不能在 lambda 内部修改定义在域外的局部变量，否则会编译错误</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Java8Tester &#123;</span><br><span class="line"> </span><br><span class="line">   final static String salutation = &quot;Hello! &quot;;</span><br><span class="line">   </span><br><span class="line">   public static void main(String args[])&#123;</span><br><span class="line">      GreetingService greetService1 = message -&gt; </span><br><span class="line">      System.out.println(salutation + message);</span><br><span class="line">      greetService1.sayMessage(&quot;Runoob&quot;);</span><br><span class="line">   &#125;</span><br><span class="line">    </span><br><span class="line">   interface GreetingService &#123;</span><br><span class="line">      void sayMessage(String message);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>我们也可以直接在 lambda 表达式中访问外层的局部变量</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class Java8Tester &#123;</span><br><span class="line">    public static void main(String args[]) &#123;</span><br><span class="line">        final int num = 1;</span><br><span class="line">        Converter&lt;Integer, String&gt; s = (param) -&gt; System.out.println(String.valueOf(param + num));</span><br><span class="line">        s.convert(2);  // 输出结果为 3</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public interface Converter&lt;T1, T2&gt; &#123;</span><br><span class="line">        void convert(int i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>lambda 表达式的局部变量可以不用声明为 final，但是必须不可被后面的代码修改</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int num = 1;  </span><br><span class="line">Converter&lt;Integer, String&gt; s = (param) -&gt; System.out.println(String.valueOf(param + num));</span><br><span class="line">s.convert(2);</span><br><span class="line">num = 5;  </span><br><span class="line">//报错信息：Local variable num defined in an enclosing scope must be final or effectively </span><br><span class="line"> final</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-方法引用"><a href="#2-方法引用" class="headerlink" title="2.方法引用"></a>2.方法引用</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.util.List;</span><br><span class="line">import java.util.ArrayList;</span><br><span class="line"> </span><br><span class="line">public class Java8Tester &#123;</span><br><span class="line">   public static void main(String args[])&#123;</span><br><span class="line">      List names = new ArrayList();</span><br><span class="line">        </span><br><span class="line">      names.add(&quot;Google&quot;);</span><br><span class="line">      names.add(&quot;Runoob&quot;);</span><br><span class="line">      names.add(&quot;Taobao&quot;);</span><br><span class="line">      names.add(&quot;Baidu&quot;);</span><br><span class="line">      names.add(&quot;Sina&quot;);</span><br><span class="line">        </span><br><span class="line">      names.forEach(System.out::println);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-函数式接口"><a href="#3-函数式接口" class="headerlink" title="3.函数式接口"></a>3.函数式接口</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@FunctionalInterface</span><br><span class="line">interface GreetingService </span><br><span class="line">&#123;</span><br><span class="line">    void sayMessage(String message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。<br>函数式接口可以被隐式转换为 lambda 表达式。<br>Lambda 表达式和方法引用（实际上也可认为是Lambda表达式）上。<br>结合上面的lambd表达式，就比较好理解了</p>
+<h2 id="4-Stream"><a href="#4-Stream" class="headerlink" title="4.Stream"></a>4.Stream</h2><p>Stream（流）是一个来自数据源的元素队列并支持聚合操作<br>元素是特定类型的对象，形成一个队列。 Java中的Stream并不会存储元素，而是按需计算。<br><code>数据源</code> 流的来源。 可以是集合，数组，I/O channel， 产生器generator 等。<br><code>聚合操作</code> 类似SQL语句一样的操作， 比如filter, map, reduce, find, match, sorted等。<br>和以前的Collection操作不同， Stream操作还有两个基础的特征：<br><code>Pipelining</code>: 中间操作都会返回流对象本身。 这样多个操作可以串联成一个管道， 如同流式风格（fluent style）。 这样做可以对操作进行优化， 比如延迟执行(laziness)和短路( short-circuiting)。<br><code>内部迭代</code>： 以前对集合遍历都是通过Iterator或者For-Each的方式, 显式的在集合外部进行迭代， 这叫做外部迭代。 Stream提供了内部迭代的方式， 通过访问者模式(Visitor)实现。</p>
+<h3 id="4-1forEach"><a href="#4-1forEach" class="headerlink" title="4.1forEach"></a>4.1forEach</h3><p>Stream 提供了新的方法 ‘forEach’ 来迭代流中的每个数据。以下代码片段使用 forEach 输出了10个随机数：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Random random = new Random();</span><br><span class="line">random.ints().limit(10).forEach(System.out::println);</span><br></pre></td></tr></table></figure></p>
+<p>我发现 后面跟的函数得是 void修饰的</p>
+<h3 id="4-2map"><a href="#4-2map" class="headerlink" title="4.2map"></a>4.2map</h3><p>map 方法用于<code>映射每个元素到对应的结果</code>，以下代码片段使用 map 输出了元素对应的平方数：<br>List<integer> numbers = Arrays.asList(3, 2, 2, 3, 7, 3, 5);<br>// 获取对应的平方数<br>List<integer> squaresList = numbers.stream().map( i -&gt; i*i).distinct().collect(Collectors.toList());<br>这个方法不会对原有的数据进行改变<code>numbers</code>也就是这个，必须在新创建一个对象<code>squaresList</code>才会放到这个新的对象里面</integer></integer></p>
+<h3 id="4-3filter"><a href="#4-3filter" class="headerlink" title="4.3filter"></a>4.3filter</h3><p>filter 方法用于通过设置的条件过滤出元素。以下代码片段使用 filter 方法过滤出空字符串<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt;strings = Arrays.asList(&quot;abc&quot;, &quot;&quot;, &quot;bc&quot;, &quot;efg&quot;, &quot;abcd&quot;,&quot;&quot;, &quot;jkl&quot;);</span><br><span class="line">// 获取空字符串的数量</span><br><span class="line">int count = strings.stream().filter(string -&gt; string.isEmpty()).count();</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-4sorted"><a href="#4-4sorted" class="headerlink" title="4.4sorted"></a>4.4sorted</h3><p>sorted 方法用于对流进行排序。以下代码片段使用 sorted 方法对输出的 10 个随机数进行排序：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Random random = new Random();</span><br><span class="line">random.ints().limit(10).sorted().forEach(System.out::println);</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-5Collectors"><a href="#4-5Collectors" class="headerlink" title="4.5Collectors"></a>4.5Collectors</h3><p>Collectors 类实现了很多归约操作，例如将流转换成集合和聚合元素。Collectors 可用于返回列表或字符串：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt;strings = Arrays.asList(&quot;abc&quot;, &quot;&quot;, &quot;bc&quot;, &quot;efg&quot;, &quot;abcd&quot;,&quot;&quot;, &quot;jkl&quot;);</span><br><span class="line">List&lt;String&gt; filtered = strings.stream().filter(string -&gt; !string.isEmpty()).collect(Collectors.toList());</span><br><span class="line"> </span><br><span class="line">System.out.println(&quot;筛选列表: &quot; + filtered);</span><br><span class="line">String mergedString = strings.stream().filter(string -&gt; !string.isEmpty()).collect(Collectors.joining(&quot;, &quot;));</span><br><span class="line">System.out.println(&quot;合并字符串: &quot; + mergedString);</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190605190309.png" alt><br>这里我列举了一些我认为重要的方法。还有很多方法没有学习</p>
+<h2 id="5-Optional"><a href="#5-Optional" class="headerlink" title="5.Optional"></a>5.Optional</h2><p>Optional 类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。<br>Optional 是个容器：它可以保存类型T的值，或者仅仅保存null。Optional提供很多有用的方法，这样我们就不用显式进行空值检测。<br>Optional 类的引入很好的解决空指针异常。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import java.util.Optional;</span><br><span class="line"> </span><br><span class="line">public class Java8Tester &#123;</span><br><span class="line">   public static void main(String args[])&#123;</span><br><span class="line">   </span><br><span class="line">      Java8Tester java8Tester = new Java8Tester();</span><br><span class="line">      Integer value1 = null;</span><br><span class="line">      Integer value2 = new Integer(10);</span><br><span class="line">        </span><br><span class="line">      // Optional.ofNullable - 允许传递为 null 参数</span><br><span class="line">      Optional&lt;Integer&gt; a = Optional.ofNullable(value1);</span><br><span class="line">        </span><br><span class="line">      // Optional.of - 如果传递的参数是 null，抛出异常 NullPointerException</span><br><span class="line">      Optional&lt;Integer&gt; b = Optional.of(value2);</span><br><span class="line">      System.out.println(java8Tester.sum(a,b));</span><br><span class="line">   &#125;</span><br><span class="line">    </span><br><span class="line">   public Integer sum(Optional&lt;Integer&gt; a, Optional&lt;Integer&gt; b)&#123;</span><br><span class="line">    </span><br><span class="line">      // Optional.isPresent - 判断值是否存在</span><br><span class="line">        </span><br><span class="line">      System.out.println(&quot;第一个参数值存在: &quot; + a.isPresent());</span><br><span class="line">      System.out.println(&quot;第二个参数值存在: &quot; + b.isPresent());</span><br><span class="line">        </span><br><span class="line">      // Optional.orElse - 如果值存在，返回它，否则返回默认值</span><br><span class="line">      Integer value1 = a.orElse(new Integer(0));</span><br><span class="line">        </span><br><span class="line">      //Optional.get - 获取值，值需要存在</span><br><span class="line">      Integer value2 = b.get();</span><br><span class="line">      return value1 + value2;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190605190624.png" alt></p>
+<p>这个新的类里面 重要的方法我觉得是.isPresent()<br>判断是否为空</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-jdk8-characteristic';
+          this.page.title = 'JDK8新特性学习';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+      
+        <div class="nav-next">
+          <a href="/2019/06/weixinshouquan/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">分享Web开发中的技术文章，分享生活中的灵感与创意，鼓励阅读，不读书则愚。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/SunningIsme" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="https://twitter.com/GallenHu" class="icon icon-twitter" target="_blank">twitter</a>
+            
+              <a href="mailto:1239222923@qq.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onsubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>爆炸头博客 &copy; 2019</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/GallenHu/hexo-theme-Daily" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'http://sunning123.top/2019/06/jdk8-characteristic/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>
