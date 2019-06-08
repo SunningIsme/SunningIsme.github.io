@@ -149,13 +149,13 @@
         <div class="entry-content ">
           <p>今天是学习微服务的第九天。今天被同步和异步难倒了</p>
 <a id="more"></a>
-<h2 id="1-异步"><a href="#1-异步" class="headerlink" title="1.异步"></a>1.异步</h2><p>参考网址：<a href="https://blog.csdn.net/zf2014122891/article/details/84557098" target="_blank" rel="noopener">https://blog.csdn.net/zf2014122891/article/details/84557098</a><br>在异步情况下，数据一致性很难保证<br>我做的实战业务流程<br>&lt;img src=”<a href="http://pr6tkgeuu.bkt.clouddn.com//20190521164310.png&gt;" target="_blank" rel="noopener">http://pr6tkgeuu.bkt.clouddn.com//20190521164310.png&gt;</a><br>改造为基于消息队列的异步<br>首先把第四部<code>订单入库</code>改为异步<br>就是在扣完库存之后发送消息。这个地方改为异步(扣完库存之后直接回复用户)。发送的消息发到消息队列里面<br>但是如果<code>订单入库</code>发生错误了呢。方法是重试。因为mq的消息一直在队列里面。不处理成功。直到成功才继续往下操作<br>然后如果把第三部<code>商品服务扣库存</code>也改为异步了呢？<br>有很多中解决办法：<br>这里说一种。<br>就是当创建订单成功之后，发送消息刀mq中，订阅该消息的服务（商品服务）执行库存扣除操作。<br>并且发送消息到mq中（成功，错误都发送消息），然后订单服务订阅这个消息。收到消息之后进行订单生成。如果是<code>错误</code>的话，就不进行订单入库操作。<br>这个中间需要前端来支持。<code>保证一定的时间间隔</code>。就是在执行创建订单到返回消息的这个过程。需要点时间。</p>
-<h2 id="2-服务网关和zuul"><a href="#2-服务网关和zuul" class="headerlink" title="2.服务网关和zuul"></a>2.服务网关和zuul</h2><p>为何要网关服务呢<br>一旦有了网关所有请求都通过它。<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520220325.png"></p>
+<h2 id="1-异步"><a href="#1-异步" class="headerlink" title="1.异步"></a>1.异步</h2><p>参考网址：<a href="https://blog.csdn.net/zf2014122891/article/details/84557098" target="_blank" rel="noopener">https://blog.csdn.net/zf2014122891/article/details/84557098</a><br>在异步情况下，数据一致性很难保证<br>我做的实战业务流程<br>&lt;img src=”<a href="http://cdn.sunning123.top//20190521164310.png&gt;" target="_blank" rel="noopener">http://cdn.sunning123.top//20190521164310.png&gt;</a><br>改造为基于消息队列的异步<br>首先把第四部<code>订单入库</code>改为异步<br>就是在扣完库存之后发送消息。这个地方改为异步(扣完库存之后直接回复用户)。发送的消息发到消息队列里面<br>但是如果<code>订单入库</code>发生错误了呢。方法是重试。因为mq的消息一直在队列里面。不处理成功。直到成功才继续往下操作<br>然后如果把第三部<code>商品服务扣库存</code>也改为异步了呢？<br>有很多中解决办法：<br>这里说一种。<br>就是当创建订单成功之后，发送消息刀mq中，订阅该消息的服务（商品服务）执行库存扣除操作。<br>并且发送消息到mq中（成功，错误都发送消息），然后订单服务订阅这个消息。收到消息之后进行订单生成。如果是<code>错误</code>的话，就不进行订单入库操作。<br>这个中间需要前端来支持。<code>保证一定的时间间隔</code>。就是在执行创建订单到返回消息的这个过程。需要点时间。</p>
+<h2 id="2-服务网关和zuul"><a href="#2-服务网关和zuul" class="headerlink" title="2.服务网关和zuul"></a>2.服务网关和zuul</h2><p>为何要网关服务呢<br>一旦有了网关所有请求都通过它。<br><img src="http://cdn.sunning123.top//20190520220325.png"></p>
 <h4 id="2-1-服务网关的要素"><a href="#2-1-服务网关的要素" class="headerlink" title="2.1 服务网关的要素"></a>2.1 服务网关的要素</h4><p>稳定性和高可用，性能和并发性，安全性，扩展性<br>网关是处理非业务相关的绝佳场所<br>协议转发，防刷，日志监控</p>
-<h4 id="2-2-常用的网关方案"><a href="#2-2-常用的网关方案" class="headerlink" title="2.2 常用的网关方案"></a>2.2 常用的网关方案</h4><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520220705.png"></p>
-<h4 id="2-3-Zuul的特点"><a href="#2-3-Zuul的特点" class="headerlink" title="2.3 Zuul的特点"></a>2.3 Zuul的特点</h4><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520220828.png"></p>
-<h4 id="2-4-四种过滤器API"><a href="#2-4-四种过滤器API" class="headerlink" title="2.4 四种过滤器API"></a>2.4 四种过滤器API</h4><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520220926.png"></p>
-<h4 id="2-5-Http请求在ZUUL中的声明周期"><a href="#2-5-Http请求在ZUUL中的声明周期" class="headerlink" title="2.5 Http请求在ZUUL中的声明周期"></a>2.5 Http请求在ZUUL中的声明周期</h4><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190520221043.png"></p>
+<h4 id="2-2-常用的网关方案"><a href="#2-2-常用的网关方案" class="headerlink" title="2.2 常用的网关方案"></a>2.2 常用的网关方案</h4><p><img src="http://cdn.sunning123.top//20190520220705.png"></p>
+<h4 id="2-3-Zuul的特点"><a href="#2-3-Zuul的特点" class="headerlink" title="2.3 Zuul的特点"></a>2.3 Zuul的特点</h4><p><img src="http://cdn.sunning123.top//20190520220828.png"></p>
+<h4 id="2-4-四种过滤器API"><a href="#2-4-四种过滤器API" class="headerlink" title="2.4 四种过滤器API"></a>2.4 四种过滤器API</h4><p><img src="http://cdn.sunning123.top//20190520220926.png"></p>
+<h4 id="2-5-Http请求在ZUUL中的声明周期"><a href="#2-5-Http请求在ZUUL中的声明周期" class="headerlink" title="2.5 Http请求在ZUUL中的声明周期"></a>2.5 Http请求在ZUUL中的声明周期</h4><p><img src="http://cdn.sunning123.top//20190520221043.png"></p>
 
         </div>
       </article>

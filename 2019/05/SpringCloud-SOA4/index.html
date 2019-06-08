@@ -134,16 +134,16 @@
           <div class="tags-links">
             
               
+                <a href="/tags/RabbitMQ/" rel="tag">
+                  RabbitMQ
+                </a>
+              
                 <a href="/tags/eureka/" rel="tag">
                   eureka
                 </a>
               
                 <a href="/tags/Feign/" rel="tag">
                   Feign
-                </a>
-              
-                <a href="/tags/RabbitMQ/" rel="tag">
-                  RabbitMQ
                 </a>
               
             
@@ -157,11 +157,11 @@
 <p>2.在启动类上添加注解<code>@EnableFeignClients</code><br>3.编写接口<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@FeignClient(name = &quot;product&quot;)</span><br><span class="line">public interface ProductClient &#123;</span><br><span class="line">    @GetMapping(&quot;/msg&quot;)</span><br><span class="line">    String GetProductMeg();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>这里主要是通过<code>@GetMapping(&quot;/msg&quot;)</code>来定位到服务端的那个方法的<br>4.编写服务端接受类<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Autowired</span><br><span class="line">    private ProductClient productClient;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;/getProductMsg&quot;)</span><br><span class="line">    public String getroductMsg()&#123;</span><br><span class="line">        String str = productClient.GetProductMeg();</span><br><span class="line">        System.out.println(str);</span><br><span class="line">        return str;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p>总结：<br>声明式REST客户端(伪RPC)<br>采用了基于接口的注解<br>内部也是ribbon</p>
-<h2 id="2-Feign的实战操作"><a href="#2-Feign的实战操作" class="headerlink" title="2.Feign的实战操作"></a>2.Feign的实战操作</h2><p>第一个bug<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190515152629.png"><br>我是因为 一边是GetMapping 一边是PostMapping报的错。如果路径不对也会报错<br>这里遇到了几个BUG<br>比如需要用到@RequestBody注解的话，必须得用@PostMapping<br>第二个bug<br>传递一个名为<code>CartDTO</code>的类给Product服务。里面有两个参数，传递过去只有一个参数有值。另一个为null<br>解决办法：在<code>CartDTO</code>类里面添加无参构造方法。要不然序列化和反序列化有问题。</p>
+<h2 id="2-Feign的实战操作"><a href="#2-Feign的实战操作" class="headerlink" title="2.Feign的实战操作"></a>2.Feign的实战操作</h2><p>第一个bug<br><img src="http://cdn.sunning123.top//20190515152629.png"><br>我是因为 一边是GetMapping 一边是PostMapping报的错。如果路径不对也会报错<br>这里遇到了几个BUG<br>比如需要用到@RequestBody注解的话，必须得用@PostMapping<br>第二个bug<br>传递一个名为<code>CartDTO</code>的类给Product服务。里面有两个参数，传递过去只有一个参数有值。另一个为null<br>解决办法：在<code>CartDTO</code>类里面添加无参构造方法。要不然序列化和反序列化有问题。</p>
 <h2 id="2-代码增强"><a href="#2-代码增强" class="headerlink" title="2.代码增强"></a>2.代码增强</h2><p>1.不建议把表映射的实体类暴漏出去<br>2.重复对象定义（商品服务和订单服务都有相同的实体类）<br>3.把对方服务定义到自己服务也是不合理的<br>解决方法：<br>划分多模块：<br>product-server:所有业务逻辑<br>product-client:对外暴露的接口<br>product-common:公共的对象<br><code>一单用了@RequestBody这个注解，就必须用@PostMapping</code></p>
-<h2 id="3-多模块的学习"><a href="#3-多模块的学习" class="headerlink" title="3.多模块的学习"></a>3.多模块的学习</h2><p>多模块拆分还是比较简单的。<br>但是我遇到个坑，就是在创建<code>common</code>模块的时候，没有设置文件为<code>Resource Root</code>这个选项<br>在项目里运行是好用的。但是 mvn打包的时候就报错了。<br>报错信息是。其他两个模块找不到<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190528194141.png" alt="模块报错信息"><br>烦恼了挺久的。<br>网上找了很多解决办法，也没有用。后来 自己捋了捋思路，发现了问题所在。<br>这里还需要注意一个点<br><code>mvn package和mvn install</code>的区别。<br>如果其他项目想要用<code>公共模块</code>或者<code>对外暴露的接口的话</code>需要install。这样就可以在其他服务中引用了。<br>还有一点，最好把版本信息添加到最外层的pom文件中的全局变量里面</p>
-<h2 id="4-RabbitMQ的安装"><a href="#4-RabbitMQ的安装" class="headerlink" title="4.RabbitMQ的安装"></a>4.RabbitMQ的安装</h2><p>通过队列和订阅主题实现消息的发布和订阅，一个微服务可以是消息的发布者，把消息通过异步的方式发到队列或者订阅主题下，作为消费者的微服务可以从队列或者主题中获取消息，通过消息中间键，把消息中的直接调用解耦。<br>网址下载：<a href="https://www.rabbitmq.com/download.html" target="_blank" rel="noopener">https://www.rabbitmq.com/download.html</a><br>找到docker安装<br>选择一个版本运行如下命令<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190515174801.png"></p>
-<p>哇，我这里遇到个大坑。。。困扰了我一个下午。就是我的docker版本不对。换了版本就耗用了<br>贴上一个成功的图片。。开心<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190515204438.png"><br>明天攻克模块拆分。。开心</p>
+<h2 id="3-多模块的学习"><a href="#3-多模块的学习" class="headerlink" title="3.多模块的学习"></a>3.多模块的学习</h2><p>多模块拆分还是比较简单的。<br>但是我遇到个坑，就是在创建<code>common</code>模块的时候，没有设置文件为<code>Resource Root</code>这个选项<br>在项目里运行是好用的。但是 mvn打包的时候就报错了。<br>报错信息是。其他两个模块找不到<br><img src="http://cdn.sunning123.top//20190528194141.png" alt="模块报错信息"><br>烦恼了挺久的。<br>网上找了很多解决办法，也没有用。后来 自己捋了捋思路，发现了问题所在。<br>这里还需要注意一个点<br><code>mvn package和mvn install</code>的区别。<br>如果其他项目想要用<code>公共模块</code>或者<code>对外暴露的接口的话</code>需要install。这样就可以在其他服务中引用了。<br>还有一点，最好把版本信息添加到最外层的pom文件中的全局变量里面</p>
+<h2 id="4-RabbitMQ的安装"><a href="#4-RabbitMQ的安装" class="headerlink" title="4.RabbitMQ的安装"></a>4.RabbitMQ的安装</h2><p>通过队列和订阅主题实现消息的发布和订阅，一个微服务可以是消息的发布者，把消息通过异步的方式发到队列或者订阅主题下，作为消费者的微服务可以从队列或者主题中获取消息，通过消息中间键，把消息中的直接调用解耦。<br>网址下载：<a href="https://www.rabbitmq.com/download.html" target="_blank" rel="noopener">https://www.rabbitmq.com/download.html</a><br>找到docker安装<br>选择一个版本运行如下命令<br><img src="http://cdn.sunning123.top//20190515174801.png"></p>
+<p>哇，我这里遇到个大坑。。。困扰了我一个下午。就是我的docker版本不对。换了版本就耗用了<br>贴上一个成功的图片。。开心<br><img src="http://cdn.sunning123.top//20190515204438.png"><br>明天攻克模块拆分。。开心</p>
 <h2 id="5-DevOps"><a href="#5-DevOps" class="headerlink" title="5.DevOps"></a>5.DevOps</h2><p>转自：<a href="https://www.zhihu.com/question/58702398/answer/235777073" target="_blank" rel="noopener">https://www.zhihu.com/question/58702398/answer/235777073</a><br>DevOps 强调的是高效组织团队之间如何通过自动化的工具协作和沟通来完成软件的生命周期管理，从而更快、更频繁地交付更稳定的软件。</p>
 
         </div>
