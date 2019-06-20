@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="数据库之面试备战">
+      <meta property="og:title" content="Java之面试备战">
   
   <!--Open Graph Description-->
   
@@ -37,7 +37,7 @@
 
   <!-- Title -->
   
-  <title>数据库之面试备战 - 爆炸头博客</title>
+  <title>Java之面试备战 - 爆炸头博客</title>
 
 
   <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
@@ -125,7 +125,7 @@
         <!-- Title date & tags -->
         <div class="post-header">
           <h1 class="entry-title">
-            数据库之面试备战
+            Java之面试备战
             
           </h1>
           <p class="posted-on">
@@ -134,12 +134,12 @@
           <div class="tags-links">
             
               
-                <a href="/tags/ACID/" rel="tag">
-                  ACID
+                <a href="/tags/JVM/" rel="tag">
+                  JVM
                 </a>
               
-                <a href="/tags/InnoDB/" rel="tag">
-                  InnoDB
+                <a href="/tags/GC/" rel="tag">
+                  GC
                 </a>
               
             
@@ -149,16 +149,6 @@
         <div class="entry-content ">
           <p>备战面试</p>
 <a id="more"></a>
-<h2 id="1-数据库架构"><a href="#1-数据库架构" class="headerlink" title="1. 数据库架构"></a>1. 数据库架构</h2><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616211935.png" alt></p>
-<h2 id="2-索引模块"><a href="#2-索引模块" class="headerlink" title="2. 索引模块"></a>2. 索引模块</h2><p>主键，唯一键以及普通键等<br>首先是二叉树<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616212105.png" alt><br>有个弊端是 有可能演变成链表形式了。这样时间复杂度就是On了<br>所以 我们 得解决这个问题还有 得把树变的矮一些。因为 每一层就得需要一次IO操作。减少层数，就减少了IO操作提高了效率<br>然后演变成B-Tree<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616212309.png" alt><br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616212330.png" alt><br>最后演变成了 B+-Tree<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616212459.png" alt><br>特点是 只在根节点存储数据。<br>连接:<a href="https://blog.csdn.net/qq_26222859/article/details/80631121" target="_blank" rel="noopener">https://blog.csdn.net/qq_26222859/article/details/80631121</a><br>这个博客说的很形象<br>经过上面的讨论 B+Tree更适合用来做存储索引<br><code>Innodb是数据和索引在一起的，myISAM数据和索引是分开的</code><br>mysam存储引擎，不管是主键索引，唯一键索引还是普通索引都是稀疏索引<br>innodb存储引擎：有且只有一个密集索引</p>
-<h2 id="3-密集索引和稀疏索引"><a href="#3-密集索引和稀疏索引" class="headerlink" title="3.密集索引和稀疏索引"></a>3.密集索引和稀疏索引</h2><p>密集索引：文件中的每个搜索吗值对应一个索引值<br>稀疏索引：文件只为索引码的某些值建立索引项<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616213019.png" alt></p>
-<h2 id="4-定位慢查询"><a href="#4-定位慢查询" class="headerlink" title="4.定位慢查询"></a>4.定位慢查询</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">show variables like &apos;%quer%&apos;</span><br><span class="line">show status like &apos;%slow_queries%&apos;</span><br><span class="line">set global slow_query_log = on</span><br><span class="line">set global long_query_time =1</span><br></pre></td></tr></table></figure>
-<p>这里需要注意几个点 就是 如果 每次都生效的话只能通过语句设置<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616213919.png" alt><br>通过<code>explain</code>关键字来剖析运行语句的参数<br>主要有几个参数比较重要<br><code>type</code>:<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616214037.png" alt><br><code>extra</code><br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616214057.png" alt></p>
-<h2 id="5-最左匹配原则"><a href="#5-最左匹配原则" class="headerlink" title="5.最左匹配原则"></a>5.最左匹配原则</h2><p>作用于联合索引<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616214339.png" alt><br>索引建立的越多越好吗<br>数据量小的表不需要建立索引，建立会增加额外的索引开销<br>数据变更需要维护索引，因此更多的索引意味着更多的维护成本<br>更多的索引意味着需要更多的时间</p>
-<h2 id="6-MyISAM与InnoDB关于所方面的区别"><a href="#6-MyISAM与InnoDB关于所方面的区别" class="headerlink" title="6.MyISAM与InnoDB关于所方面的区别"></a>6.MyISAM与InnoDB关于所方面的区别</h2><p>MyISAM:默认使用的是表级锁，不支持行级锁<br>InnoDB:默认用的是行级锁，也支持表级锁</p>
-<p>MyISAM会在进行查询的时候给表加上一个读锁,然后其他的session访问的时候，又想要加上一个写锁(表),随意就会堵塞了。<br>读锁，可以同时进行读锁(共享锁)<br>写锁，就不能进行读锁的那样的操作(排他锁)<br>innoDB是上锁和解锁分开的。<br>对 id等于为3的行加锁，但是id等于4的这一行可以操作<br>innoDB在没用到索引的时候用的是表级锁<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616215043.png" alt><br>MyISAM适合的场景<br>频繁执行全表count语句<br>对数据进行增删改的频率不高，查询非常频繁<br>没有事务<br>InnoDB适合的场景<br>数据增删改都相当频繁<br>可靠性要求比较高，要求支持事务</p>
-<h2 id="7-数据库事务"><a href="#7-数据库事务" class="headerlink" title="7.数据库事务"></a>7.数据库事务</h2><p>ACID<br>原子性，一致性，隔离性，持久性。<br>最重要的就是隔离性<br>隔离性:当多个事务并发执行的时候，一个事物不会影响到其他事务<br>脏读：就是未提交读<br>总共有1000块钱<br>比如一个人取出 200块钱，未提交事务<br>然后另一个人读 发现变成了800块钱，然后存了 200块钱，查询是1000块钱。<br>然后 取钱的事务回滚了。过几天 存钱的人发现 我的钱怎么变成了1200了呢？<br>提交读<br>不可重复度：在一定时间内 多次读数据 读到的数据不一致(数据不可靠)<br>（可重复度这个隔离级别，会在一个session中有一个数据，比如 我的钱1600 然后 另一个人存了400 在另一个人那里看是2000，但是 在我这里看还是1600，如果 在我这里 存入了 100块钱 然后在查看数据变成了2100了。）侧重于对数据的修改<br>幻读：当某个事务在读取该范围的记录时，另外一个事务在该范围内插入了新的记录，当之前的事务再次读取记录的时候，会产生幻读不管事务提不提交。侧重于对数据的插入，相当于在读的时候给加上了锁。除非提交读的事务<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616215709.png" alt><br>但是 mysql上的 RR(可重复读是默认的隔离级别但是却能避免幻读)<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616220022.png" alt><br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190616220136.png" alt><br>在快照读情况下，mysql通过mvcc来避免幻读。<br>在当前读情况下，mysql通过next-key来避免幻读</p>
-<h2 id="8-常用sql语句"><a href="#8-常用sql语句" class="headerlink" title="8.常用sql语句"></a>8.常用sql语句</h2><p>1.GROUP BY<br>满足 “SELECT子句中的列名必须为分组或列函数”(仅限于group by 分组的表)<br>列函数对于group by自居定义的每个组返回一个结果<br>2.HAVING<br>通常与GROUP BY子句一起使用<br>WHERE过滤行，HAVING过滤组<br>出现同一sql的顺序。WHERE&gt;GROUP&gt;HAVING<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190618215117.png" alt></p>
 <p>##1.谈谈你对java的理解<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190618215754.png" alt></p>
 <h3 id="1-1平台无关性"><a href="#1-1平台无关性" class="headerlink" title="1.1平台无关性"></a>1.1平台无关性</h3><p>javap -c 反编译 .class文件 要不然看到的是乱码<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190618215943.png" alt><br>为什么JVM不直接将源码解析成机器码去执行？<br>因为如果解析成机器码去执行，每次执行前都会做很多检查，而且 其他语言也可以转化为字节码然后在JVM上运行<br>JVM是如何加载.class文件的？<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190618220253.png" alt></p>
 <h3 id="1-2反射"><a href="#1-2反射" class="headerlink" title="1.2反射"></a>1.2反射</h3><p>JAVA反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种冬天获取信息以及动态调用对象功能称为java语言的反射机制<br>我觉得就是把类的所有属性和方法都反射刀对象上。<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190618220612.png" alt><br>这个地方getDeclaredMethod方法获取所有方法 但是不能获取到继承的方法<br>而getMethod只能获取当前类的public方法但是可以获取到继承的方法<br>java反射就是把所有的java类的各种成分映射成一个个对象(比如方法对象，变量对象)</p>
@@ -173,7 +163,7 @@
 <h3 id="2-1JVM三大调优参数"><a href="#2-1JVM三大调优参数" class="headerlink" title="2.1JVM三大调优参数"></a>2.1JVM三大调优参数</h3><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190619082903.png" alt><br>如果超过了初始值，则自动扩容到堆能达到的最大值大小</p>
 <h3 id="2-2内存分配策略"><a href="#2-2内存分配策略" class="headerlink" title="2.2内存分配策略"></a>2.2内存分配策略</h3><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190619083349.png" alt></p>
 <h3 id="2-3java内存模型中堆和栈的区别"><a href="#2-3java内存模型中堆和栈的区别" class="headerlink" title="2.3java内存模型中堆和栈的区别"></a>2.3java内存模型中堆和栈的区别</h3><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190619083631.png" alt><br>管理方式:栈自动释放，堆需要GC<br>空间大小：栈比堆小<br>碎片相关：栈产生的碎片远远小于堆<br>分配方式：栈支持静态分配和动态分配，而堆仅支持动态分配<br>效率：栈的效率比堆高<br>静态分配:是编译器完成的，比如局部变量的分配</p>
-<h3 id="2-4intern方法"><a href="#2-4intern方法" class="headerlink" title="2.4intern方法"></a>2.4intern方法</h3><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190619084545.png" alt><br>这里”a”就代表了已经放入了常量池中，然后在new一个就在堆中也创建了个”a”<br>所以甭管怎么比较 两个地址肯定都是不一样的。因为intern仅限于string a = “a”;这种方式<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190619090120.png" alt><br>jdk1.6以前只能放入副本进入</p>
+<h3 id="2-4intern方法"><a href="#2-4intern方法" class="headerlink" title="2.4intern方法"></a>2.4intern方法</h3><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190619084545.png" alt><br>这里”a”就代表了已经放入了常量池中，然后在new一个就在堆中也创建了个”a”<br>所以甭管怎么比较 两个地址肯定都是不一样的。因为intern仅限于string a = “a”;这种方式<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190619090120.png" alt><br>jdk1.6以前只能放入副本进入<br>jdk1.7以后 把对象的引用也放入进去，我觉得意思就是把引用也只向他而已。而不是单纯的放个副本进去</p>
 
         </div>
       </article>
@@ -189,8 +179,8 @@
     <script type="text/javascript">
     var disqus_config = function () {
           this.page.url = window.location.href;
-          this.page.identifier = 'post-interview-database';
-          this.page.title = '数据库之面试备战';
+          this.page.identifier = 'post-interview-Java';
+          this.page.title = 'Java之面试备战';
       };
     </script>
     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
@@ -204,12 +194,12 @@
     <div class="nav-links">
       
         <div class="nav-previous">
-          <a href="/2019/06/interview-Java/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
+          <a href="/2019/06/interview-network/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
         </div>
       
       
         <div class="nav-next">
-          <a href="/2019/06/jdk8-characteristic/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+          <a href="/2019/06/interview-database/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
         </div>
       
     </div>
@@ -282,7 +272,7 @@
   var disqus_shortname = 'hinpc';
 
   
-  var disqus_url = 'http://sunning123.top/2019/06/interview-database/';
+  var disqus_url = 'http://sunning123.top/2019/06/interview-Java/';
   
 
   (function(){
