@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="SpringCould学习笔记(八)">
+      <meta property="og:title" content="shiro">
   
   <!--Open Graph Description-->
   
@@ -37,7 +37,7 @@
 
   <!-- Title -->
   
-  <title>SpringCould学习笔记(八) - 爆炸头博客</title>
+  <title>shiro - 爆炸头博客</title>
 
 
   <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
@@ -125,21 +125,17 @@
         <!-- Title date & tags -->
         <div class="post-header">
           <h1 class="entry-title">
-            SpringCould学习笔记(八)
+            shiro
             
           </h1>
           <p class="posted-on">
-          2019-05-20
+          2019-06-24
           </p>
           <div class="tags-links">
             
               
-                <a href="/tags/eureka/" rel="tag">
-                  eureka
-                </a>
-              
-                <a href="/tags/SpringCloud Bus/" rel="tag">
-                  SpringCloud Bus
+                <a href="/tags/shiro/" rel="tag">
+                  shiro
                 </a>
               
             
@@ -147,15 +143,12 @@
         </div>
         <!-- Post Main Content -->
         <div class="entry-content ">
-          <p>今天是学习微服务的第九天。今天被同步和异步难倒了</p>
+          <p>shiro的学习</p>
 <a id="more"></a>
-<h2 id="1-异步"><a href="#1-异步" class="headerlink" title="1.异步"></a>1.异步</h2><p>参考网址：<a href="https://blog.csdn.net/zf2014122891/article/details/84557098" target="_blank" rel="noopener">https://blog.csdn.net/zf2014122891/article/details/84557098</a><br>在异步情况下，数据一致性很难保证<br>我做的实战业务流程<br><img src="http://cdn.sunning123.top//20190521164310.png"><br>改造为基于消息队列的异步<br>首先把第四部<code>订单入库</code>改为异步<br>就是在扣完库存之后发送消息。这个地方改为异步(扣完库存之后直接回复用户)。发送的消息发到消息队列里面<br>但是如果<code>订单入库</code>发生错误了呢。方法是重试。因为mq的消息一直在队列里面。不处理成功。直到成功才继续往下操作<br>然后如果把第三部<code>商品服务扣库存</code>也改为异步了呢？<br>有很多中解决办法：<br>这里说一种。<br>就是当创建订单成功之后，发送消息刀mq中，订阅该消息的服务（商品服务）执行库存扣除操作。<br>并且发送消息到mq中（成功，错误都发送消息），然后订单服务订阅这个消息。收到消息之后进行订单生成。如果是<code>错误</code>的话，就不进行订单入库操作。<br>这个中间需要前端来支持。<code>保证一定的时间间隔</code>。就是在执行创建订单到返回消息的这个过程。需要点时间。</p>
-<h2 id="2-服务网关和zuul"><a href="#2-服务网关和zuul" class="headerlink" title="2.服务网关和zuul"></a>2.服务网关和zuul</h2><p>为何要网关服务呢<br>一旦有了网关所有请求都通过它。<br><img src="http://cdn.sunning123.top//20190520220325.png"></p>
-<h4 id="2-1-服务网关的要素"><a href="#2-1-服务网关的要素" class="headerlink" title="2.1 服务网关的要素"></a>2.1 服务网关的要素</h4><p>稳定性和高可用，性能和并发性，安全性，扩展性<br>网关是处理非业务相关的绝佳场所<br>协议转发，防刷，日志监控</p>
-<h4 id="2-2-常用的网关方案"><a href="#2-2-常用的网关方案" class="headerlink" title="2.2 常用的网关方案"></a>2.2 常用的网关方案</h4><p><img src="http://cdn.sunning123.top//20190520220705.png"></p>
-<h4 id="2-3-Zuul的特点"><a href="#2-3-Zuul的特点" class="headerlink" title="2.3 Zuul的特点"></a>2.3 Zuul的特点</h4><p><img src="http://cdn.sunning123.top//20190520220828.png"></p>
-<h4 id="2-4-四种过滤器API"><a href="#2-4-四种过滤器API" class="headerlink" title="2.4 四种过滤器API"></a>2.4 四种过滤器API</h4><p><img src="http://cdn.sunning123.top//20190520220926.png"></p>
-<h4 id="2-5-Http请求在ZUUL中的声明周期"><a href="#2-5-Http请求在ZUUL中的声明周期" class="headerlink" title="2.5 Http请求在ZUUL中的声明周期"></a>2.5 Http请求在ZUUL中的声明周期</h4><p><img src="http://cdn.sunning123.top//20190520221043.png"></p>
+<h2 id="1-shiro的基本架构"><a href="#1-shiro的基本架构" class="headerlink" title="1.shiro的基本架构"></a>1.shiro的基本架构</h2><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190624180249.png" alt><br>这个图里面最上面部分是可以理解为当前的操作用户，中间部分是shiro的核心<br>其中Authenticator是用户认证器管理登入登出，<br>Authorizer是权限管理器<br>SessionManager是shiro自带的session的管理器<br>SessionDAO是操作session的工具<br>CacheManager是缓存管理器<br>Pluggable Realms是shiro获取授权信息的桥梁和下面的数据库相连接</p>
+<h2 id="2-代码实现"><a href="#2-代码实现" class="headerlink" title="2.代码实现"></a>2.代码实现</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CustomeRealm customeRealm = new CustomeRealm();</span><br><span class="line">        //构建SecurityManager环境</span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(customeRealm);</span><br><span class="line"></span><br><span class="line">        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();</span><br><span class="line">        matcher.setHashAlgorithmName(&quot;md5&quot;);</span><br><span class="line">        matcher.setHashIterations(1);</span><br><span class="line"></span><br><span class="line">        customeRealm.setCredentialsMatcher(matcher);</span><br><span class="line"></span><br><span class="line">        //2.主题提交认证请求</span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token = new UsernamePasswordToken(&quot;sunning&quot;,&quot;123456&quot;);</span><br><span class="line">        subject.login(token);</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;是否相同&quot;+subject.isAuthenticated());</span><br><span class="line">/*</span><br><span class="line"></span><br><span class="line">        subject.checkRole(&quot;admin&quot;);</span><br><span class="line"></span><br><span class="line">        subject.checkPermission(&quot;user:delete&quot;);</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我这里是通过自定义的Realm来进行校验的<br>并且增加了<code>md5</code>的加密<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class CustomeRealm extends AuthorizingRealm &#123;</span><br><span class="line">    Map&lt;String,String&gt; map = new HashMap&lt;String,String&gt;();</span><br><span class="line">    &#123;</span><br><span class="line">        map.put(&quot;sunning&quot;,&quot;9e7b39d411bbc8daceebed60b85c51ed&quot;);</span><br><span class="line">        super.setName(&quot;customr&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException &#123;</span><br><span class="line">        //从主体传过来的subject，获得用户名</span><br><span class="line">        String username = (String) authenticationToken.getPrincipal();</span><br><span class="line"></span><br><span class="line">        String password = getPasswordBybase(username);</span><br><span class="line">        if (password==null)&#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(&quot;sunning&quot;,password,&quot;customr&quot;);</span><br><span class="line">        simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(&quot;sunning&quot;));</span><br><span class="line">        return simpleAuthenticationInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String getPasswordBybase(String username) &#123;</span><br><span class="line">        return map.get(username);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Md5Hash md5Hash = new Md5Hash(&quot;123456&quot;,&quot;sunning&quot;);</span><br><span class="line">        System.out.println(md5Hash.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我这里是没有连接数据库，我是通过map集合模拟的。</p>
 
         </div>
       </article>
@@ -171,8 +164,8 @@
     <script type="text/javascript">
     var disqus_config = function () {
           this.page.url = window.location.href;
-          this.page.identifier = 'post-SpringCloud-SOA8';
-          this.page.title = 'SpringCould学习笔记(八)';
+          this.page.identifier = 'post-shiro';
+          this.page.title = 'shiro';
       };
     </script>
     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
@@ -185,13 +178,9 @@
     <!-- Pre or Next -->
     <div class="nav-links">
       
-        <div class="nav-previous">
-          <a href="/2019/05/SpringCloud-SOA9/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
-        </div>
-      
       
         <div class="nav-next">
-          <a href="/2019/05/SpringCloud-SOA7/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+          <a href="/2019/06/interview-network/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
         </div>
       
     </div>
@@ -264,7 +253,7 @@
   var disqus_shortname = 'hinpc';
 
   
-  var disqus_url = 'http://sunning123.top/2019/05/SpringCloud-SOA8/';
+  var disqus_url = 'http://sunning123.top/2019/06/shiro/';
   
 
   (function(){
