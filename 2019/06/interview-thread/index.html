@@ -149,18 +149,18 @@
         <div class="entry-content ">
           <p>备战面试</p>
 <a id="more"></a>
-<h2 id="1-进程和线程的关系"><a href="#1-进程和线程的关系" class="headerlink" title="1.进程和线程的关系"></a>1.进程和线程的关系</h2><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620092712.png" alt><br>进程是资源分配的最小单位，线程是CPU调度的最小单位<br>线程属于某个进程，共享其资源<br>所有与进程相关的资源都被记录在PCB(进程控制块)<br>线程只由堆栈寄存器，程序计数器和TCB组成(线程控制块)<br>进程和线程的区别<br>线程不能看作独立应用，而进程可看作独立应用<br>进程有独立的地址空间，互不影响，线程只是进程的不同执行路径<br>线程没有独立的地址空间，多进程的程序比多线程程序健壮(线程凉了，进程也就废了。)<br>进程的切换开销比线程大<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620093721.png" alt></p>
+<h2 id="1-进程和线程的关系"><a href="#1-进程和线程的关系" class="headerlink" title="1.进程和线程的关系"></a>1.进程和线程的关系</h2><p><img src="http://cdn.sunning123.top//20190620092712.png" alt><br>进程是资源分配的最小单位，线程是CPU调度的最小单位<br>线程属于某个进程，共享其资源<br>所有与进程相关的资源都被记录在PCB(进程控制块)<br>线程只由堆栈寄存器，程序计数器和TCB组成(线程控制块)<br>进程和线程的区别<br>线程不能看作独立应用，而进程可看作独立应用<br>进程有独立的地址空间，互不影响，线程只是进程的不同执行路径<br>线程没有独立的地址空间，多进程的程序比多线程程序健壮(线程凉了，进程也就废了。)<br>进程的切换开销比线程大<br><img src="http://cdn.sunning123.top//20190620093721.png" alt></p>
 <h3 id="1-1Thread中的start和run方法的区别"><a href="#1-1Thread中的start和run方法的区别" class="headerlink" title="1.1Thread中的start和run方法的区别"></a>1.1Thread中的start和run方法的区别</h3><p>调用start()方法会创建一个子线程并启动(调用run方法)<br>run()方法只是Thread的一个普通方法的调用</p>
 <h3 id="1-2Thread和Runnable是什么关系"><a href="#1-2Thread和Runnable是什么关系" class="headerlink" title="1.2Thread和Runnable是什么关系"></a>1.2Thread和Runnable是什么关系</h3><p>Thread是实现了Runnable接口的类，使得run支持多线程<br>因类的单一继承原则，推荐使用Runnable接口</p>
 <h3 id="1-3如何给run-方法传参"><a href="#1-3如何给run-方法传参" class="headerlink" title="1.3如何给run()方法传参"></a>1.3如何给run()方法传参</h3><p>构造函数传参<br>成员变量传参<br>回调函数传参</p>
-<h3 id="1-4如何实现处理线程的返回值"><a href="#1-4如何实现处理线程的返回值" class="headerlink" title="1.4如何实现处理线程的返回值"></a>1.4如何实现处理线程的返回值</h3><p>主线程等待发(循环)<br>使用Thread类的join()用色当前线程以等待子线程处理完毕(t.join(),如果有两个线程)<br>通过Callable接口实现：通过FutureTask Or 线程池获取<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620095102.png" alt></p>
-<h3 id="1-5线程的六个状态"><a href="#1-5线程的六个状态" class="headerlink" title="1.5线程的六个状态"></a>1.5线程的六个状态</h3><p><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620101027.png" alt></p>
-<h3 id="1-6sleep和Thread的区别"><a href="#1-6sleep和Thread的区别" class="headerlink" title="1.6sleep和Thread的区别"></a>1.6sleep和Thread的区别</h3><p>sleep是Thread类的方法，wait是Object类中定义的方法<br>sleep()方法可以在任何地方使用<br>wait()方法只能在synchronized方法或synchronized快中使用<br>主要区别：<br>Thread.sleep只会让出CPU，不会导致锁行为的改变<br>Object.wait不仅让出CPU，还会释放已经占有的同步资源锁<br>两个概念：<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620101342.png" alt><br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620101352.png" alt></p>
+<h3 id="1-4如何实现处理线程的返回值"><a href="#1-4如何实现处理线程的返回值" class="headerlink" title="1.4如何实现处理线程的返回值"></a>1.4如何实现处理线程的返回值</h3><p>主线程等待发(循环)<br>使用Thread类的join()用色当前线程以等待子线程处理完毕(t.join(),如果有两个线程)<br>通过Callable接口实现：通过FutureTask Or 线程池获取<br><img src="http://cdn.sunning123.top//20190620095102.png" alt></p>
+<h3 id="1-5线程的六个状态"><a href="#1-5线程的六个状态" class="headerlink" title="1.5线程的六个状态"></a>1.5线程的六个状态</h3><p><img src="http://cdn.sunning123.top//20190620101027.png" alt></p>
+<h3 id="1-6sleep和Thread的区别"><a href="#1-6sleep和Thread的区别" class="headerlink" title="1.6sleep和Thread的区别"></a>1.6sleep和Thread的区别</h3><p>sleep是Thread类的方法，wait是Object类中定义的方法<br>sleep()方法可以在任何地方使用<br>wait()方法只能在synchronized方法或synchronized快中使用<br>主要区别：<br>Thread.sleep只会让出CPU，不会导致锁行为的改变<br>Object.wait不仅让出CPU，还会释放已经占有的同步资源锁<br>两个概念：<br><img src="http://cdn.sunning123.top//20190620101342.png" alt><br><img src="http://cdn.sunning123.top//20190620101352.png" alt></p>
 <h3 id="1-7notify和notifyAll的区别"><a href="#1-7notify和notifyAll的区别" class="headerlink" title="1.7notify和notifyAll的区别"></a>1.7notify和notifyAll的区别</h3><p>notifyAll会让所有处于等待吃的线程全部进入锁池去竞争锁的机会<br>notify只会随机选取一个处于等待池的线程进入锁池去竞争获取锁的机会</p>
 <h3 id="1-8yield"><a href="#1-8yield" class="headerlink" title="1.8yield"></a>1.8yield</h3><p>当调用Thread.yield()函数时，会给线程调度器一个当前线程愿意让出CPU使用的暗示，但线程调度其可能会忽略这个暗示。<br>不会对锁有影响</p>
 <h3 id="1-9终端线程"><a href="#1-9终端线程" class="headerlink" title="1.9终端线程"></a>1.9终端线程</h3><p>电泳interrupt(),通知线程应该中断了<br>如果线程处于被堵塞状态，那么线程将立即退出被阻塞状态，并抛出一个InterruptedException异常<br>如果线程处于正常活动状态，那么会将该线程的中断标志设置为true,被设置中断标志的线程将继续正常运行，不受影响。</p>
-<h2 id="2-synchronized"><a href="#2-synchronized" class="headerlink" title="2. synchronized"></a>2. synchronized</h2><p>线程安全问题的主要诱因<br>存在共享数据(也称临界资源)<br>存在多条线程共同操作这些共享数据<br>解决问题的根本方法：<br>同一时刻有且只有一个线程在操作共享数据，其他线程必须等到该线程处理完数据后在对共享数据操作。<br>互斥锁的特性<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620103418.png" alt><br>获取锁的分类：对象锁和类锁<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620103503.png" alt><br>类锁得是静态方法需要有static关键字</p>
-<h2 id="2-1java线程池"><a href="#2-1java线程池" class="headerlink" title="2.1java线程池"></a>2.1java线程池</h2><p>为什么要使用线程池？<br>降低资源消耗<br>提高线程的客观理性<br>而 一般的web项目本身就是多线程的<br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620103843.png" alt><br><img src="http://pr6tkgeuu.bkt.clouddn.com//20190620103924.png" alt></p>
+<h2 id="2-synchronized"><a href="#2-synchronized" class="headerlink" title="2. synchronized"></a>2. synchronized</h2><p>线程安全问题的主要诱因<br>存在共享数据(也称临界资源)<br>存在多条线程共同操作这些共享数据<br>解决问题的根本方法：<br>同一时刻有且只有一个线程在操作共享数据，其他线程必须等到该线程处理完数据后在对共享数据操作。<br>互斥锁的特性<br><img src="http://cdn.sunning123.top//20190620103418.png" alt><br>获取锁的分类：对象锁和类锁<br><img src="http://cdn.sunning123.top//20190620103503.png" alt><br>类锁得是静态方法需要有static关键字</p>
+<h2 id="2-1java线程池"><a href="#2-1java线程池" class="headerlink" title="2.1java线程池"></a>2.1java线程池</h2><p>为什么要使用线程池？<br>降低资源消耗<br>提高线程的客观理性<br>而 一般的web项目本身就是多线程的<br><img src="http://cdn.sunning123.top//20190620103843.png" alt><br><img src="http://cdn.sunning123.top//20190620103924.png" alt></p>
 
         </div>
       </article>
@@ -196,7 +196,7 @@
       
       
         <div class="nav-next">
-          <a href="/2019/06/interview-database/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+          <a href="/2019/06/interview-Java/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
         </div>
       
     </div>
