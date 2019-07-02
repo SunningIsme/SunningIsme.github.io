@@ -18,7 +18,7 @@
 
   <!--Open Graph Title-->
   
-      <meta property="og:title" content="algorithm">
+      <meta property="og:title" content="shiro">
   
   <!--Open Graph Description-->
   
@@ -37,7 +37,7 @@
 
   <!-- Title -->
   
-  <title>algorithm - 爆炸头博客</title>
+  <title>shiro - 爆炸头博客</title>
 
 
   <link rel="shortcut icon" href="https://hexo.io/icon/favicon-96x96.png">
@@ -125,21 +125,44 @@
         <!-- Title date & tags -->
         <div class="post-header">
           <h1 class="entry-title">
-            algorithm
+            shiro
             
           </h1>
           <p class="posted-on">
-          2019-06-30
+          2019-06-24
           </p>
           <div class="tags-links">
             
+              
+                <a href="/tags/shiro/" rel="tag">
+                  shiro
+                </a>
               
             
           </div>
         </div>
         <!-- Post Main Content -->
         <div class="entry-content ">
-          
+          <p>基本数据结构中的算法学习</p>
+<a id="more"></a>
+<h2 id="1-选择排序"><a href="#1-选择排序" class="headerlink" title="1.选择排序"></a>1.选择排序</h2><p>逻辑:有一串数组(n)，在里面选择最小的然后和第一个进行换位。以此类推。当选择了最小的放在数组第一个位置了之后，然后在从后面n-1个里面选择最小的再替换<br>代码实现<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(int i=0;i&lt;n;i++)</span><br><span class="line">	int minindex=i;</span><br><span class="line">	for(int j=i+1;j&lt;n;j++)</span><br><span class="line">		if(arr[j]&lt;arr[minindex])</span><br><span class="line">			minindex=j;</span><br><span class="line">	swap(arr[i],arr[minindex]);</span><br></pre></td></tr></table></figure></p>
+<p>很好理解但是时间复杂度(On2)</p>
+<h2 id="2-插入排序"><a href="#2-插入排序" class="headerlink" title="2.插入排序"></a>2.插入排序</h2><p>逻辑:有一串数组(n),从第二个元素也就是下标为1的开始于其前面的对边如果小于前面的，则换位置直到小于后面的元素。<br>代码实现<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(int i=1;i&lt;n;i++)</span><br><span class="line">	for(j=i;j&gt;0;j--)</span><br><span class="line">		if(arr[j]&lt;a[j-1])</span><br><span class="line">			swap(arr[j],arr[j-1]);</span><br><span class="line">		else</span><br><span class="line">			break;</span><br></pre></td></tr></table></figure></p>
+<p>优化(因为swap方法比较费时，所以改为赋值)<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(int i=1;i&lt;n;i++)</span><br><span class="line">	T e = arr[i];</span><br><span class="line">	int j;</span><br><span class="line">	for(j = i;j&gt;0;j--)</span><br><span class="line">		arr[j]=arr[j-1];</span><br><span class="line">	arr[j]=e;</span><br></pre></td></tr></table></figure></p>
+<p>虽然插入排序的时间复杂度是On2但是如果数组里面的数据高度有序，或者重复比较多就会导致时间复杂度变为Onlogn<br>所以不要小看On2的复杂度了。</p>
+<h2 id="3-归并排序"><a href="#3-归并排序" class="headerlink" title="3.归并排序"></a>3.归并排序</h2><p>逻辑:有一串数组(n),从中间分为两部分，一直分知道分为每一组只有一个数据。然后每次循环需要相同大小的数组(比如最后分为1个位一组了，然后需要1个大小为1的数组)，每一个组都是分为左右的，走到最后然后会执行merge(归并排序)<br>所以没执行一次每一组就是有序的。并且放到新的数组里面。从低向上一层一层的合并，最后排序完成。(左边的一个数据和右边的数据比较，如果哪个小放上去并且++)创建的数组是为了给最终数组排序的辅助数组(从辅助数组中取值然后放入到最终数组中)<br>代码实现<br>递归实现<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void__mergeSort(T arr[],int l, int r)&#123;</span><br><span class="line">	if(l&gt;-r)</span><br><span class="line">		return;</span><br><span class="line">	int mid = (l+r)/2</span><br><span class="line">	__mergeSort(arr,l,mid);</span><br><span class="line">	__mergeSort(arr,mid+1,r);</span><br><span class="line">	__merge(arr,l,mid,r);</span><br><span class="line">	</span><br><span class="line">void__merge(T arr[],int l,int mid,int r)&#123;</span><br><span class="line">	T aux[r-l+1];</span><br><span class="line">	for(int i=l;i&lt;=r;i++)</span><br><span class="line">		aux[i-l] = arr[i];</span><br><span class="line">	int i=l,j=mid+1;</span><br><span class="line">	for(int k=l;k&lt;=r;k++)</span><br><span class="line">		if(i &gt; mid)&#123;</span><br><span class="line">			arr[k] = aux[j-l]; //判断索引的合法性</span><br><span class="line">			j ++;</span><br><span class="line">		&#125;</span><br><span class="line">		else if( j &gt;r)&#123;</span><br><span class="line">			arr[k] = aux[i-l];</span><br><span class="line">			i++;</span><br><span class="line">		else if(aux[i-l]&lt;aux[j-l])&#123; //这里为什么-l因为需要有l的偏移。</span><br><span class="line">			arr[k] = aux[i-l];</span><br><span class="line">		else&#123;</span><br><span class="line">			arr[k] = aux[j-l];</span><br><span class="line">			j++;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>改进1，如果数组是一个近乎有序的数组，运行时间会远小于插入排序<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if(l&gt;-r)</span><br><span class="line">		return;</span><br><span class="line">	int mid = (l+r)/2</span><br><span class="line">	__mergeSort(arr,l,mid);</span><br><span class="line">	__mergeSort(arr,mid+1,r);</span><br><span class="line">	if(arr[mid] &gt; arr[mid+1])&#123;</span><br><span class="line">		__merge(arr,l,mid,r); //因为每一组都是有序的所以只有右边的组大于左边的组才需要排序</span><br><span class="line">	__merge(arr,l,mid,r);</span><br></pre></td></tr></table></figure></p>
+<p>改进2，如果排序的数组比较少就用插入排序。所以排序到15后面的时候，就用插入排序了。又增强了归并排序<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if( r-l &lt;=15)&#123;</span><br><span class="line">	insertionSort(arr,l,r); //先是根据归并排序，等到缩小到左右两组加一起小于等于15的时候，就返回然后再根据插入排序，进行排序</span><br><span class="line">	return;</span><br></pre></td></tr></table></figure></p>
+<h2 id="4-快速排序"><a href="#4-快速排序" class="headerlink" title="4.快速排序"></a>4.快速排序</h2><p>逻辑：<br>例如，我们对10个数进行排序，首先选择一个为基准，然后把小于这个数放在左边，大于这个数放在右边。然后对左右两边进行快速排序。一直归并下去。<br>代码逻辑：首先取得第一个为基数，然后按顺序向后比较，如果小于这个数就调换位置。但是因为是从第一个开始的，第一个和基数比较不管大小，都会放到第一个，如果遇到了小于基数的，则换位置，j++（j就指向大于基数的位置了）。如果之后的数小于基数就和j位置(大于基数)交换位置。<br>两个优化<br>L小于等于15的话进行插入排序<br>有可能会变成n2级别的时间复杂度 近乎于有序的情况下<br>解决办法，随机选择一个数作为基数，而不选择第一个数据。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int __partition(T arr[], int l,int r)&#123;</span><br><span class="line">	T v= arr[l];</span><br><span class="line">	int j = l;</span><br><span class="line">	for(int i=l+1;i&lt;=r ;i++)&#123;</span><br><span class="line">		if(arr[i]&lt;v)&#123;</span><br><span class="line">			swap(arr[k+1], arr[i]);</span><br><span class="line">			j++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="5-堆排序"><a href="#5-堆排序" class="headerlink" title="5.堆排序"></a>5.堆排序</h2><p>堆排序：<br>优先队列：每次执行完了之后，需要在进行排序(实现了堆)<br>完全二叉树,堆中某个节点的值总是不大于其父节点的值，堆是一个完全二叉树。<br>使用数组实现从1开始标记。<br>维护二叉堆<br>Shift Up<br>插入到数组最后，然后数组的下标/2就是父亲节点，和父亲节点比，如果大于父节点则换位置。维护了二叉树<br>代码实现<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void shiftUp(int k)&#123;</span><br><span class="line">	while(k&gt;1&amp;&amp;data[k/2] &lt; data[k])&#123;</span><br><span class="line">		swap(data[k/2],data[k]);</span><br><span class="line">		k/=2;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Shift Down<br>从二叉树里面取出元素，只能取出根节点位置的元素。然后把最后一个元素放上去。然后根据Shift Down进行维护最大堆的二叉树。首先比较左右两边的那个大然后换位置,之后一直就进行下去了。<br>代码实现<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">while(2*k &lt;= count)&#123;</span><br><span class="line">	int j=2*k;</span><br><span class="line">	if(j + 1 &lt;= count &amp;&amp; data[j+1] &gt; data[j])</span><br><span class="line">		j+=1;</span><br><span class="line">	if(data[k] &gt;= data[j])</span><br><span class="line">		break;</span><br><span class="line">	swap(data[k],data[j]);</span><br><span class="line">	k=j;</span><br></pre></td></tr></table></figure></p>
+<p>Heapify:<br>就是先找一个不符合堆的完全二叉树，对每一个叶子节点(都是只含有一个元素的堆)进行shift down操作(每次获取的是两个子数的下标)。比较两个哪个大就换位置。</p>
+<h2 id="6-二叉搜索树"><a href="#6-二叉搜索树" class="headerlink" title="6.二叉搜索树"></a>6.二叉搜索树</h2><p>二分查找法:对于有序数列，才能使用二分查找法<br>逻辑：分为两部分 小于v 和大于v的部分，这样继续查找下去(logn级别)<br>代码实现<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int binarySearch(T arr[],int n,T target)&#123;</span><br><span class="line">	int l=0,r = n-1;</span><br><span class="line">	while (l &lt;=r)&#123;</span><br><span class="line">		int mid = (l+r)/2;</span><br><span class="line">		if(arr[mid] == target)</span><br><span class="line">			return mid;</span><br><span class="line">		if(target &lt; arr[mid])</span><br><span class="line">			r = mid -1;</span><br><span class="line">		else</span><br><span class="line">			l = mid +1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果两个int 相加都是最大值的话就会有问题<br>改进办法<br><code>int mid = l+ (r-l)/2;</code><br>二分搜索树的特点<br>不仅可查找数据；还可以高效的插入，删除数据-动态维护数据<br>可以方便的回答很多数据之间的关系问题；<br>min,max,floor,ceil,rank,select<br>二叉搜索树定义<br>每个节点的键值大于左孩子<br>每个节点的键值小于右孩子<br>以左右孩子为根子树仍为二分搜索树<br>不一定是完全二叉树<br>插入节点<br>逻辑：从根节点开始比如果小于根节点放到左边，如果大于根节点放到右边<br>代码<br><img src="http://cdn.sunning123.top//20190702210729.png" alt><br>遍历到最后，如果node==null就会返回带有key和value的node(这样就把这个节点添加进去了)<br>查找操作<br>和插入操作一样<br>contain(判断是否存在要查找的数据，返回boolean)<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bool contain(Node* node,Key key)&#123;</span><br><span class="line">	if(node ==null)</span><br><span class="line">		return false;</span><br><span class="line">	if(key == node-&gt;key)</span><br><span class="line">		return true;</span><br><span class="line">	else if (key &lt;node-&gt;key)</span><br><span class="line">		return contain(node-&gt;left , key);</span><br><span class="line">	else</span><br><span class="line">		return contain(node-&gt;right , key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>search和contain差不多</p>
+<h2 id="8-图"><a href="#8-图" class="headerlink" title="8.图"></a>8.图</h2><p>有向图:如果图中任意两个顶点之间的边都是有向边（简而言之就是有方向的边），则称该图为有向图（Directed graphs）<br>无向图:如果图中任意两个顶点之间的边都是无向边（简而言之就是没有方向的边），则称该图为无向图（Undirected graphs）<br>完全图:在无向图中，如果任意两个顶点之间都存在边，则称该图为无向完全图。（含有n个顶点的无向完全图有(n×(n-1))/2条边）<br>有权图:每条边带有数据<br>无权图:每条边不带有数据<br>稠密图:趋近于完全图的团，就是每个节点有很多很多的边(以节点总数为基准)<br>稀疏图:每个节点的边不是特别的多。和完全图差距比较远。(不要看到很复杂的图就认为是稠密图)<br>邻接矩阵:大部分用来实现稠密图.由矩阵组成，。因此，用一个一维数组存放图中所有顶点数据；用一个二维数组存放顶点间关系（边或弧）的数据，这个二维数组称为邻接矩阵<br>邻接表；这个表头结点所对应的顶点存在相邻顶点，则把相邻顶点依次存放于表头结点所指向的单向链表中。<br>代码实现邻接矩阵<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">DenseGraph(int n,bool directed)&#123;</span><br><span class="line">	this-&gt;n = n;</span><br><span class="line">	this-&gt;m = m;</span><br><span class="line">	this-&gt;directed = directed;</span><br><span class="line">	for(int i=0;i&lt;n;i++)</span><br><span class="line">		g.push_back(vector&lt;bool&gt;(n,false));</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://cdn.sunning123.top//20190702214431.png" alt><br>增加一条边<br><img src="http://cdn.sunning123.top//20190702213627.png" alt><br>邻接表<br><img src="http://cdn.sunning123.top//20190702213746.png" alt></p>
+
         </div>
       </article>
     </div>
@@ -155,7 +178,7 @@
     var disqus_config = function () {
           this.page.url = window.location.href;
           this.page.identifier = 'post-algorithm';
-          this.page.title = 'algorithm';
+          this.page.title = 'shiro';
       };
     </script>
     <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
@@ -168,9 +191,13 @@
     <!-- Pre or Next -->
     <div class="nav-links">
       
+        <div class="nav-previous">
+          <a href="/2019/06/shiro/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> 上一页</a>
+        </div>
+      
       
         <div class="nav-next">
-          <a href="/2019/06/shiro/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+          <a href="/2019/06/interview-database/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
         </div>
       
     </div>
